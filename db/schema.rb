@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140725093806) do
+ActiveRecord::Schema.define(version: 20140725123252) do
 
   create_table "pokemons", force: true do |t|
     t.string   "name"
@@ -22,6 +22,17 @@ ActiveRecord::Schema.define(version: 20140725093806) do
     t.integer  "speed"
     t.integer  "sp_atk"
     t.integer  "sp_def"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "pokemons_types", id: false, force: true do |t|
+    t.integer "pokemon_id", null: false
+    t.integer "type_id",    null: false
+  end
+
+  create_table "types", force: true do |t|
+    t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
