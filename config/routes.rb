@@ -1,5 +1,11 @@
 Pokedex::Application.routes.draw do
   root "poketools#pokedex"
+  namespace :api, defaults: {format: 'json'} do
+    namespace :v1 do
+      resources :pokemons, only: [:index, :show]
+    end
+  end
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
