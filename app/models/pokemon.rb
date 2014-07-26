@@ -4,4 +4,8 @@ class Pokemon < ActiveRecord::Base
   def as_json(options = {})
     super(except: [:id, :created_at, :updated_at], include: [types: {only: :name}])
   end
+  
+  def to_param
+    national_id
+  end
 end
