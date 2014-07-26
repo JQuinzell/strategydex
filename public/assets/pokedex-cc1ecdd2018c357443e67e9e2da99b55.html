@@ -1,0 +1,30 @@
+<div class="pokePage">
+	<header><h1>Pokedex</h1></header>
+
+	<form action="#">
+		<input id="search" type="text" ng-model="query">
+
+		<label >
+			<select ng-model="order">
+				<option value="en">Name</option>
+				<option value="num">Number</option>
+			</select>
+		</label>
+
+		<label>
+			<input type="radio" ng-model="dir" name="direction" checked>
+			ascending
+		</label>
+		<label>
+			<input type="radio" ng-model="dir" name="direction" value="reverse">
+			descending
+		</label>
+	</form>
+
+	<div class="pokemon" ng-repeat="pokemon in pokedex | filter: query | orderBy: order:dir">
+		<span class="number">{{pokemon.national_id}}</span>
+		<div class="sprite"></div>
+		<h2 class="name">{{pokemon.name | uppercase}}</h2>
+		<span class="type"><a href="#/details/{{pokemon.national_id}}">{{pokemon.name}}</a></span>
+	</div>
+</div>
