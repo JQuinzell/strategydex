@@ -2,8 +2,8 @@ var PokedexControllers = angular.module('PokedexControllers', []);
 
 PokedexControllers.controller('PokedexController', ['$scope', 'pokeBank', function($scope, pokeBank) {
 	pokeBank.all().then(function(data){
-		$scope.pokedex = data.pokemon;
-		$scope.order = 'num';
+		$scope.pokedex = data;
+		$scope.order = 'national_id';
 	});
 }]);
 

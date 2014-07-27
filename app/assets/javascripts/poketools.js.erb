@@ -1,3 +1,6 @@
+<% environment.context_class.instance_eval { include Rails.application.routes.url_helpers } %>
+
+
 var pokeTools = angular.module('pokeTools', [
 	'ngRoute',
 	'PokedexControllers',
@@ -52,17 +55,17 @@ pokeTools.factory('pokeBank', ['DSCacheFactory', 'pokedexAPI', '$q', function(DS
 }]);
 
 pokeTools.factory('pokedexAPI', ['$http', function($http){
-	var pokeUri = "http://pokeapi.co/api/v1/pokemon/";
-	var dexUri = "http://pokeapi.co/api/v1/pokedex/1";
 	dex = {};
-	var cb = "/?callback=JSON_CALLBACK";
+  var pokeUri = "<%= api_v1_pokemons_path %>" + "/";
+  console.log(pokeUri);
 
 	dex.find = function(id){
-		return $http.jsonp(pokeUri + id + cb);
+		return $http.get(pokeUri + id);
 	};
 
 	dex.all = function() {
-		return $http.jsonp(dexUri + cb);
+    console.log("Gotta catch em all");
+    return $http.get(pokeUri, {cache: true});
 	};
 
 	return dex;
