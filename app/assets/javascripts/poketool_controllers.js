@@ -8,7 +8,21 @@ PokedexControllers.controller('PokedexController', ['$scope', 'pokeBank', functi
   $scope.query = {
     types: []
   };
+  $scope.stat_map = [
+    {name: "hp", abbr: "hp"},
+    {name: "attack", abbr: "attack"},
+    {name: "defense", abbr: "defense"},
+    {name: "speed", abbr: "speed"},
+    {name: "special attack", abbr: "sp_atk"},
+    {name: "special defense", abbr: "sp_def"}
+  ];
   $scope.type_list = ["normal", "fighting", "flying", "poison", "ground", "rock", "bug", "ghost", "steel", "fire", "water", "grass", "electric", "psychic", "ice", "dragon", "dark", "fairy"];
+  
+  $scope.current_stat = "hp";
+  
+  $scope.setStat = function(stat){
+    $scope.current_stat = stat;
+  }
   
   $scope.toggleType =function(type){
     var index = $scope.query["types"].indexOf(type);
@@ -70,6 +84,21 @@ PokedexControllers.filter('onlyTypes',function(){
         }
       }
       return list;
+    }
+    return pokemon;
+  };
+});
+
+PokedexControllers.filter('statSort', function(){
+  return function(pokemon, stat, dir, active){
+    if(active === true){
+      console.log("Called with:", stat, dir);
+      pokemon.sort(function(a,b){
+        console.log("Sorting ", stat);
+        console.log(a[stat]-b[stat]);
+        return b[stat]-a[stat];
+      });
+      if(dir === "reverse") {pokemon.reverse()}
     }
     return pokemon;
   };
