@@ -24,10 +24,15 @@
     </label>
     <label ng-repeat="type in type_list" ng-show="typeFiltering">
       {{type}}<input name="types" type="checkbox" ng-click="toggleType(type)" >
+    </label><br>
+    <label>Toggle Stat Sort: <input type="checkbox" ng-model="toggleStat"></label> <br>
+    <label ng-repeat="stat in stat_map" ng-show="toggleStat">
+      {{stat.name}}: <input type="radio" name="stat" ng-click="setStat(stat.abbr)" >
     </label>
+    
 	</form>
 
-	<div class="pokemon" ng-repeat="pokemon in pokedex | filter:{name:query.search} | orderBy:query.order:query.dir | onlyTypes:query.types:typeFiltering">
+	<div class="pokemon" ng-repeat="pokemon in pokedex | filter:{name:query.search} | orderBy:query.order:query.dir | onlyTypes:query.types:typeFiltering | statSort:current_stat:query.dir:toggleStat">
 		<span class="number">{{pokemon.national_id}}</span>
 		<div class="sprite"></div>
 		<h2 class="name">{{pokemon.name | uppercase}}</h2>
