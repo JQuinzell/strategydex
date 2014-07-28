@@ -19,12 +19,15 @@
 			<input type="radio" ng-model="query.dir" name="direction" value="reverse">
 			descending
 		</label>
-    <label ng-repeat="type in type_list">
-      {{type}}<input name="types" type="checkbox" ng-click="toggleType(type)">
+    <label>
+      Toggle Types: <input type="checkbox" ng-model="typeFiltering">
+    </label>
+    <label ng-repeat="type in type_list" ng-show="typeFiltering">
+      {{type}}<input name="types" type="checkbox" ng-click="toggleType(type)" >
     </label>
 	</form>
 
-	<div class="pokemon" ng-repeat="pokemon in pokedex | filter:{name:query.search} | orderBy:query.order:query.dir">
+	<div class="pokemon" ng-repeat="pokemon in pokedex | filter:{name:query.search} | orderBy:query.order:query.dir | onlyTypes:query.types:typeFiltering">
 		<span class="number">{{pokemon.national_id}}</span>
 		<div class="sprite"></div>
 		<h2 class="name">{{pokemon.name | uppercase}}</h2>
