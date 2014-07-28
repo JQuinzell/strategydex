@@ -5,6 +5,19 @@ PokedexControllers.controller('PokedexController', ['$scope', 'pokeBank', functi
 		$scope.pokedex = data;
 		$scope.order = 'national_id';
 	});
+  $scope.query = {
+    types: {}
+  };
+  $scope.type_list = ["normal", "fighting", "flying", "poison", "ground", "rock", "bug", "ghost", "steel", "fire", "water", "grass", "electric", "psychic", "ice", "dragon", "dark", "fairy"];
+  
+  $scope.toggleType =function(type){
+    if(!$scope.query["types"][type]){
+      $scope.query["types"][type] = true;
+    } else {
+      $scope.query["types"][type] = false;
+    }
+    console.log($scope.query["types"]);
+  };
 }]);
 
 PokedexControllers.controller('detailsController',
