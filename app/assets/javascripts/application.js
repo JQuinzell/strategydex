@@ -15,4 +15,6 @@
 //= require angular
 //= require angular-route
 //= require angular-cache
+//= require angular-rails-templates
+//= require_tree ../ng-views
 //= require_tree .
