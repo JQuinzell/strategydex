@@ -10,11 +10,11 @@ var pokeTools = angular.module('pokeTools', [
 pokeTools.config(['$routeProvider', function($routeProvider){
 	$routeProvider.
 	when('/pokedex', {
-		templateUrl: '<%= asset_path "pokedex.html" %>',
+		templateUrl: '<%= asset_path "pokedex.html.erb" %>',
 		controller: 'PokedexController'
 	}).
 	when('/details/:pokemonId', {
-		templateUrl: '<%= asset_path "details.html" %>',
+		templateUrl: '<%= asset_path "details.html.erb" %>',
 		controller: 'detailsController'
 	}).
 	otherwise({
