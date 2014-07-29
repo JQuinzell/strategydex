@@ -32,11 +32,7 @@
     
 	</form>
 
-	<div class="pokemon" ng-repeat="pokemon in pokedex | filter:{name:query.search} | orderBy:query.order:query.dir | onlyTypes:query.types:typeFiltering | statSort:current_stat:query.dir:toggleStat">
-		<span class="number">{{pokemon.national_id}}</span>
-		<div class="sprite"></div>
-		<h2 class="name">{{pokemon.name | uppercase}}</h2>
-		<span class="type" ng-repeat="type in pokemon.types">{{type.name}}</span>
-    <span class="type">{{pokemon.hp}}-{{pokemon.attack}}-{{pokemon.defense}}-{{pokemon.speed}}-{{pokemon.sp_atk}}-{{pokemon.sp_def}}</span>
+	<div ng-repeat="pokemon in pokedex | filter:{name:query.search} | orderBy:query.order:query.dir | onlyTypes:query.types:typeFiltering | statSort:current_stat:query.dir:toggleStat">
+    <pokemon name="{{pokemon.name}}" types="pokemon.types" hp="{{pokemon.hp}}" attack="{{pokemon.attack}}" defense="{{pokemon.defense}}" speed="{{pokemon.speed}}" spa="{{pokemon.sp_atk}}" spd="{{pokemon.sp_def}}" id="{{pokemon.national_id}}"></pokemon>
 	</div>
 </div>
