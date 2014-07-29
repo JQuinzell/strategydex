@@ -1,0 +1,42 @@
+<div class="pokePage">
+	<header><h1>Pokedex</h1></header>
+
+	<form action="#">
+		<input id="search" type="text" ng-model="query.search">
+
+		<label >
+			<select ng-model="query.order">
+				<option value="name">Name</option>
+				<option value="national_id">Id</option>
+			</select>
+		</label>
+
+		<label>
+			<input type="radio" ng-model="query.dir" name="direction" checked>
+			ascending
+		</label>
+		<label>
+			<input type="radio" ng-model="query.dir" name="direction" value="reverse">
+			descending
+		</label>
+    <label>
+      Toggle Types: <input type="checkbox" ng-model="typeFiltering">
+    </label>
+    <label ng-repeat="type in type_list" ng-show="typeFiltering">
+      {{type}}<input name="types" type="checkbox" ng-click="toggleType(type)" >
+    </label><br>
+    <label>Toggle Stat Sort: <input type="checkbox" ng-model="toggleStat"></label> <br>
+    <label ng-repeat="stat in stat_map" ng-show="toggleStat">
+      {{stat.name}}: <input type="radio" name="stat" ng-click="setStat(stat.abbr)" >
+    </label>
+    
+	</form>
+
+	<div class="pokemon" ng-repeat="pokemon in pokedex | filter:{name:query.search} | orderBy:query.order:query.dir | onlyTypes:query.types:typeFiltering | statSort:current_stat:query.dir:toggleStat">
+		<span class="number">{{pokemon.national_id}}</span>
+		<div class="sprite"></div>
+		<h2 class="name">{{pokemon.name | uppercase}}</h2>
+		<span class="type" ng-repeat="type in pokemon.types">{{type.name}}</span>
+    <span class="type">{{pokemon.hp}}-{{pokemon.attack}}-{{pokemon.defense}}-{{pokemon.speed}}-{{pokemon.sp_atk}}-{{pokemon.sp_def}}</span>
+	</div>
+</div>
