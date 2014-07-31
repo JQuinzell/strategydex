@@ -5,15 +5,7 @@ pokemon.directive('pokemon', function(){
     restrict: 'AE',
     replace: true,
     scope: {
-      id: '@',
-      name: '@',
-      types: '=',
-      hp: '@',
-      attack: '@',
-      defense: '@',
-      speed: '@',
-      spa: '@',
-      spd: '@'
+      pkmn: '='
     },
     templateUrl: "pokemon.html"
   };
