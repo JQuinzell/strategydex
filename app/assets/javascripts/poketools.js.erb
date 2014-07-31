@@ -4,7 +4,6 @@
 var pokeTools = angular.module('pokeTools', [
 	'ngRoute',
 	'PokedexControllers',
-	'angular-data.DSCacheFactory',
   'templates'
 ]);
 
@@ -21,53 +20,4 @@ pokeTools.config(['$routeProvider', function($routeProvider){
 	otherwise({
 		redirectTo: '/pokedex'
 	});
-}]);
-
-pokeTools.factory('pokeBank', ['DSCacheFactory', 'pokedexAPI', '$q', function(DSCacheFactory, pokedexAPI, $q){
-	var cache = DSCacheFactory('pokeCache');
-	var banker = {};
-	banker.put = function(pokemon){
-		cache.put(pokemon.national_id, pokemon);
-	};
-	banker.get = function(id) {
-		var deferred = $q.defer();
-		var pokeData = cache.get(id);
-		console.log(pokeData);
-		if(pokeData){
-			console.log("Served from cache");
-			deferred.resolve(pokeData);
-		} else {
-			pokedexAPI.find(id).success(function(data){
-				deferred.resolve(data);
-			});
-		}
-		return deferred.promise;
-	};
-	banker.all = function(){
-		var deferred = $q.defer();
-		pokedexAPI.all().success(function(data){
-			deferred.resolve(data);
-		});
-		return deferred.promise;
-	}
-
-
-	return banker;
-}]);
-
-pokeTools.factory('pokedexAPI', ['$http', function($http){
-	dex = {};
-  var pokeUri = "<%= api_v1_pokemons_path %>" + "/";
-  console.log(pokeUri);
-
-	dex.find = function(id){
-		return $http.get(pokeUri + id);
-	};
-
-	dex.all = function() {
-    console.log("Gotta catch em all");
-    return $http.get(pokeUri, {cache: true});
-	};
-
-	return dex;
 }]);

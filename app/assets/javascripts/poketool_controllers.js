@@ -1,4 +1,4 @@
-var PokedexControllers = angular.module('PokedexControllers', ['PokemonDirectives']);
+var PokedexControllers = angular.module('PokedexControllers', ['PokemonDirectives', 'PokemonServices']);
 
 PokedexControllers.controller('PokedexController', ['$scope', 'pokeBank', function($scope, pokeBank) {
 	pokeBank.all().then(function(data){
