@@ -33,6 +33,6 @@
 	</form>
 
 	<div ng-repeat="pokemon in pokedex | filter:{name:query.search} | orderBy:query.order:query.dir | onlyTypes:query.types:typeFiltering | statSort:current_stat:query.dir:toggleStat">
-    <pokemon name="{{pokemon.name}}" types="pokemon.types" hp="{{pokemon.hp}}" attack="{{pokemon.attack}}" defense="{{pokemon.defense}}" speed="{{pokemon.speed}}" spa="{{pokemon.sp_atk}}" spd="{{pokemon.sp_def}}" id="{{pokemon.national_id}}"></pokemon>
+    <pokemon pkmn="pokemon"></pokemon>
 	</div>
 </div>

@@ -1,7 +1,7 @@
 <div class="pokemon">
-	<span class="number">{{id}}</span>
+	<span class="number">{{pkmn.national_id}}</span>
 	<div class="sprite"></div>
-  <h2 class="name">{{name}}</h2>
-  <span class="type" ng-repeat="type in types">{{type.name}}</span>
-  <span class="type">HP-{{hp}} Attack-{{attack}} Defense-{{defense}} Speed-{{speed}} Sp. Atk-{{spa}} Sp. Def-{{spd}}</span>
+  <h2 class="name">{{pkmn.name}}</h2>
+  <span class="type" ng-repeat="type in pkmn.types">{{type.name}}</span>
+  <span class="type">HP-{{pkmn.hp}} Attack-{{pkmn.attack}} Defense-{{pkmn.defense}} Speed-{{pkmn.speed}} Sp. Atk-{{pkmn.sp_atk}} Sp. Def-{{pkmn.sp_def}}</span>
 </div>
