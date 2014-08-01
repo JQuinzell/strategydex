@@ -1,11 +1,17 @@
 var PokedexControllers = angular.module('PokedexControllers', ['PokemonDirectives', 'PokemonServices']);
 
-PokedexControllers.controller('PokedexController', ['$scope', 'pokeBank', function($scope, pokeBank) {
-  $scope.query = {
+PokedexControllers.controller('PokedexController', ['$scope', 'pokeBank', '$filter', function($scope, pokeBank, $filter) {
+  var pokedex;
+  $scope.type_list = ["normal", "fighting", "flying", "poison", "ground", "rock", "bug", "ghost", "steel", "fire", "water", "grass", "electric", "psychic", "ice", "dragon", "dark", "fairy"];
+ $scope.query = {
     types: []
   };
+  for(var i = 0; i<$scope.type_list.length; i++){
+    $scope.query.types.push($scope.type_list[i]);
+  }
 	pokeBank.all().then(function(data){
-		$scope.pokedex = data;
+    pokedex = data;
+		$scope.pokedex = pokedex;
 		$scope.query.order = 'national_id';
 	});
   $scope.stat_map = [
@@ -16,22 +22,21 @@ PokedexControllers.controller('PokedexController', ['$scope', 'pokeBank', functi
     {name: "special attack", abbr: "sp_atk"},
     {name: "special defense", abbr: "sp_def"}
   ];
-  $scope.type_list = ["normal", "fighting", "flying", "poison", "ground", "rock", "bug", "ghost", "steel", "fire", "water", "grass", "electric", "psychic", "ice", "dragon", "dark", "fairy"];
   
   $scope.current_stat = "hp";
   
   $scope.setStat = function(stat){
     $scope.current_stat = stat;
   }
-  
+    
   $scope.toggleType =function(type){
-    var index = $scope.query["types"].indexOf(type);
+    var index = $scope.query.types.indexOf(type);
     if( index === -1){
-      $scope.query["types"].push(type);
+      $scope.query.types.push(type);
     } else {
-      $scope.query["types"].splice(index, 1);
+      $scope.query.types.splice(index, 1);
     }
-    console.log($scope.query["types"]);
+    $scope.pokedex = $filter('onlyTypes')(pokedex, $scope.query.types);
   };
   
   
@@ -70,22 +75,20 @@ PokedexControllers.controller('detailsController',
 }]);
 
 PokedexControllers.filter('onlyTypes',function(){
-  return function(pokemon,valid_types,active){
-    if(active === true){
-      var list = [];
+  return function(pokemon,valid_types){
+    var list = [];
 
-      for(var i = 0; i<pokemon.length; i++){
-        var mon = pokemon[i];
-        for(var j = 0; j<mon.types.length; j++){
-          if(valid_types.indexOf(mon.types[j].name) > -1){
-            list.push(mon);
-            break;
-          }
+    for(var i = 0; i<pokemon.length; i++){
+      var mon = pokemon[i];
+      for(var j = 0; j<mon.types.length; j++){
+        if(valid_types.indexOf(mon.types[j].name) > -1){
+          list.push(mon);
+          break;
         }
       }
-      return list;
     }
-    return pokemon;
+    console.log(list);
+    return list;
   };
 });
 
