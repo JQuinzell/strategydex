@@ -19,11 +19,8 @@
 			<input type="radio" ng-model="query.dir" name="direction" value="reverse">
 			descending
 		</label>
-    <label>
-      Toggle Types: <input type="checkbox" ng-model="typeFiltering">
-    </label>
-    <label ng-repeat="type in type_list" ng-show="typeFiltering">
-      {{type}}<input name="types" type="checkbox" ng-click="toggleType(type)" >
+    <label ng-repeat="type in type_list">
+      {{type}}<input name="types" type="checkbox" ng-click="toggleType(type)" checked>
     </label><br>
     <label>Toggle Stat Sort: <input type="checkbox" ng-model="toggleStat"></label> <br>
     <label ng-repeat="stat in stat_map" ng-show="toggleStat">
@@ -32,7 +29,7 @@
     
 	</form>
 
-	<div ng-repeat="pokemon in pokedex | filter:{name:query.search} | orderBy:query.order:query.dir | onlyTypes:query.types:typeFiltering | statSort:current_stat:query.dir:toggleStat">
+	<div ng-repeat="pokemon in pokedex | filter:{name:query.search} | orderBy:query.order:query.dir | statSort:current_stat:query.dir:toggleStat">
     <pokemon pkmn="pokemon"></pokemon>
 	</div>
 </div>
