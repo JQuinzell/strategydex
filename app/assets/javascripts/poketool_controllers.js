@@ -1,13 +1,13 @@
 var PokedexControllers = angular.module('PokedexControllers', ['PokemonDirectives', 'PokemonServices']);
 
 PokedexControllers.controller('PokedexController', ['$scope', 'pokeBank', function($scope, pokeBank) {
-	pokeBank.all().then(function(data){
-		$scope.pokedex = data;
-		$scope.order = 'national_id';
-	});
   $scope.query = {
     types: []
   };
+	pokeBank.all().then(function(data){
+		$scope.pokedex = data;
+		$scope.query.order = 'national_id';
+	});
   $scope.stat_map = [
     {name: "hp", abbr: "hp"},
     {name: "attack", abbr: "attack"},
