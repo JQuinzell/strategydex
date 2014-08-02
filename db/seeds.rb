@@ -25,5 +25,11 @@ pokedex.each do |data|
     name = type["name"]
     pokemon.types << Type.find_or_create_by(name: name)
   end
+  evos = []
+  (evos << data["evolutions"]).flatten!
+  evos.each do |p|
+    name = p["to"]
+    pokemon.evolved_forms << Pokemon.find_or_create_by(name: name) unless name.include?("-mega")
+  end
   pokemon.save
 end
