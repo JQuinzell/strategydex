@@ -1,11 +1,9 @@
-<% environment.context_class.instance_eval { include Rails.application.routes.url_helpers } %>
-
 var app = angular.module('PokemonServices', []);
 
 app.factory('pokeBank', ['$http', '$cacheFactory', '$q', function($http, $cacheFactory, $q){
   var pokedex = {};
   var cache = $cacheFactory('pokemon');
-  var pokeUri = "<%= api_v1_pokemons_path %>" + "/";
+  var pokeUri = "/api/v1/pokemons/";
   
   pokedex.all = function(id){
     var pokemon = cache.get(id);
