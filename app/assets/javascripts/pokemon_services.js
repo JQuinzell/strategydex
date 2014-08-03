@@ -5,17 +5,21 @@ app.factory('pokeBank', ['$http', '$cacheFactory', '$q', function($http, $cacheF
   var cache = $cacheFactory('pokemon');
   var pokeUri = "/api/v1/pokemons/";
   
-  pokedex.all = function(id){
-    var pokemon = cache.get(id);
+  pokedex.all = function(){
     var d = $q.defer();
-    if(pokemon){
-      d.resolve(pokemon);
-    } else {
-      $http.get(pokeUri, {cache: true}).success(function(data){
-        d.resolve(data);
-      });
-    }
+    var path = pokeUri + "?nfe=true"
+    $http.get(path, {cache: true}).success(function(data){
+      d.resolve(data);
+    });
     return d.promise;
   };
+  
+  pokedex.fully_evolved = function(){
+    var d = $q.defer();
+    $http.get(pokeUri, {cache: true}).success(function(data){
+      d.resolve(data);
+    });
+    return d.promise;
+  }
   return pokedex;
 }]);
