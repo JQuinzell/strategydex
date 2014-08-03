@@ -4,7 +4,7 @@ module Api
       respond_to :json
       
       def index
-        respond_with Pokemon.all
+        respond_with params[:nfe] == "true" ? Pokemon.all : Pokemon.fully_evolved
       end
             
       def show
