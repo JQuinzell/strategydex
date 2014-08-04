@@ -4,12 +4,13 @@ PokedexControllers.controller('PokedexController', ['$scope', 'pokeBank', '$filt
   var pokedex;
   $scope.type_list = ["normal", "fighting", "flying", "poison", "ground", "rock", "bug", "ghost", "steel", "fire", "water", "grass", "electric", "psychic", "ice", "dragon", "dark", "fairy"];
  $scope.query = {
-    types: []
+    types: [],
+    nfe: true
   };
   for(var i = 0; i<$scope.type_list.length; i++){
     $scope.query.types.push($scope.type_list[i]);
   }
-	pokeBank.all().then(function(data){
+	pokeBank.fully_evolved().then(function(data){
     pokedex = data;
 		$scope.pokedex = pokedex;
 		$scope.query.order = 'national_id';
@@ -39,7 +40,24 @@ PokedexControllers.controller('PokedexController', ['$scope', 'pokeBank', '$filt
     $scope.pokedex = $filter('onlyTypes')(pokedex, $scope.query.types);
   };
   
-  
+  $scope.toggleNfe = function(){
+    console.log($scope.query.nfe);
+    if($scope.query.nfe) {
+      pokeBank.all().then(function(data){
+        console.log("Getting all..");
+        pokedex = data;
+        $scope.pokedex = pokedex;
+    	});
+      $scope.query.nfe = false;
+    } else {
+        pokeBank.fully_evolved().then(function(data){
+          console.log("Getting fully evo..")
+          pokedex = data;
+          $scope.pokedex = pokedex;
+        });
+        $scope.query.nfe = true;
+    }
+  };
 }]);
 
 PokedexControllers.controller('detailsController',
