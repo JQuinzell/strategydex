@@ -19,6 +19,9 @@
 			<input type="radio" ng-model="query.dir" name="direction" value="reverse">
 			descending
 		</label>
+    <label>
+      Include NFE: <input type="checkbox" ng-click="toggleNfe()">
+    </label>
     <label ng-repeat="type in type_list">
       {{type}}<input name="types" type="checkbox" ng-click="toggleType(type)" checked>
     </label><br>
