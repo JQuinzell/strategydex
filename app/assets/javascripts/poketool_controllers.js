@@ -1,19 +1,19 @@
 var PokedexControllers = angular.module('PokedexControllers', ['PokemonDirectives', 'PokemonServices']);
 
-PokedexControllers.controller('PokedexController', ['$scope', 'pokeBank', '$filter', function($scope, pokeBank, $filter) {
-  var pokedex;
+PokedexControllers.controller('PokedexController', ['$scope', 'pokedex', '$filter', function($scope, pokedex, $filter) {
+  var pokedata;
   $scope.type_list = ["normal", "fighting", "flying", "poison", "ground", "rock", "bug", "ghost", "steel", "fire", "water", "grass", "electric", "psychic", "ice", "dragon", "dark", "fairy"];
  $scope.query = {
     types: [],
+    order: 'id',
     nfe: true
   };
   for(var i = 0; i<$scope.type_list.length; i++){
     $scope.query.types.push($scope.type_list[i]);
   }
-	pokeBank.fully_evolved().then(function(data){
-    pokedex = data;
-		$scope.pokedex = pokedex;
-		$scope.query.order = 'national_id';
+	pokedex.all().success(function(data){
+    pokedata = data;
+		$scope.pokedex = pokedata;
 	});
   $scope.stat_map = [
     {name: "hp", abbr: "hp"},

@@ -1,0 +1,11 @@
+var app = angular.module('PokemonServices', []);
+
+app.factory('pokedex', ['$http', function($http){
+  var pokeObj = {};
+  
+  pokeObj.all = function(){
+    return $http.get('<%= asset_path("pokedex.json") %>');
+  };
+  
+  return pokeObj;
+}]);
