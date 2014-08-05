@@ -8,6 +8,12 @@
 			<select ng-model="query.order">
 				<option value="name">Name</option>
 				<option value="id">Id</option>
+        <option value="hp">HP</option>
+        <option value="attack">Attack</option>
+        <option value="defense">Defense</option>
+        <option value="speed">Speed</option>
+        <option value="sp_atk">Sp. Attack</option>
+        <option value="sp_def">Sp. Defense</option>
 			</select>
 		</label>
 
@@ -24,15 +30,10 @@
     </label>
     <label ng-repeat="type in type_list">
       {{type}}<input name="types" type="checkbox" ng-click="toggleType(type)" checked>
-    </label><br>
-    <label>Toggle Stat Sort: <input type="checkbox" ng-model="toggleStat"></label> <br>
-    <label ng-repeat="stat in stat_map" ng-show="toggleStat">
-      {{stat.name}}: <input type="radio" name="stat" ng-click="setStat(stat.abbr)" >
-    </label>
-    
+    </label><br>    
 	</form>
 
-	<div ng-repeat="pokemon in pokedex | filter:{name:query.search} | orderBy:query.order:query.dir | statSort:current_stat:query.dir:toggleStat">
+	<div ng-repeat="pokemon in pokedex | filter:{name:query.search} | orderBy:query.order:query.dir">
     <pokemon pkmn="pokemon"></pokemon>
 	</div>
 </div>
