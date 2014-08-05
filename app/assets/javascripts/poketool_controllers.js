@@ -15,21 +15,7 @@ PokedexControllers.controller('PokedexController', ['$scope', 'pokedex', '$filte
     pokedata = data;
 		$scope.pokedex = pokedata;
 	});
-  $scope.stat_map = [
-    {name: "hp", abbr: "hp"},
-    {name: "attack", abbr: "attack"},
-    {name: "defense", abbr: "defense"},
-    {name: "speed", abbr: "speed"},
-    {name: "special attack", abbr: "sp_atk"},
-    {name: "special defense", abbr: "sp_def"}
-  ];
-  
-  $scope.current_stat = "hp";
-  
-  $scope.setStat = function(stat){
-    $scope.current_stat = stat;
-  }
-    
+
   $scope.toggleType =function(type){
     var index = $scope.query.types.indexOf(type);
     if( index === -1){
@@ -107,20 +93,5 @@ PokedexControllers.filter('onlyTypes',function(){
     }
     console.log(list);
     return list;
-  };
-});
-
-PokedexControllers.filter('statSort', function(){
-  return function(pokemon, stat, dir, active){
-    if(active === true){
-      console.log("Called with:", stat, dir);
-      pokemon.sort(function(a,b){
-        console.log("Sorting ", stat);
-        console.log(a[stat]-b[stat]);
-        return b[stat]-a[stat];
-      });
-      if(dir === "reverse") {pokemon.reverse()}
-    }
-    return pokemon;
   };
 });
