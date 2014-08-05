@@ -6,14 +6,14 @@ PokedexControllers.controller('PokedexController', ['$scope', 'pokedex', '$filte
  $scope.query = {
     types: [],
     order: 'id',
-    nfe: true
+    nfe: false
   };
   for(var i = 0; i<$scope.type_list.length; i++){
     $scope.query.types.push($scope.type_list[i]);
   }
 	pokedex.all().success(function(data){
     pokedata = data;
-		$scope.pokedex = pokedata;
+		$scope.pokedex = $filter('fullyEvolved')(pokedata);
 	});
 
   $scope.toggleType =function(type){
@@ -27,23 +27,14 @@ PokedexControllers.controller('PokedexController', ['$scope', 'pokedex', '$filte
   };
   
   $scope.toggleNfe = function(){
-    console.log($scope.query.nfe);
-    if($scope.query.nfe) {
-      pokeBank.all().then(function(data){
-        console.log("Getting all..");
-        pokedex = data;
-        $scope.pokedex = pokedex;
-    	});
-      $scope.query.nfe = false;
+    if(!$scope.query.nfe){
+      $scope.pokedex = pokedata
     } else {
-        pokeBank.fully_evolved().then(function(data){
-          console.log("Getting fully evo..")
-          pokedex = data;
-          $scope.pokedex = pokedex;
-        });
-        $scope.query.nfe = true;
+      $scope.pokedex = $filter('fullyEvolved')(pokedata);
     }
+    $scope.query.nfe = !$scope.query.nfe;
   };
+  
 }]);
 
 PokedexControllers.controller('detailsController',
@@ -77,6 +68,19 @@ PokedexControllers.controller('detailsController',
 		}
 	);
 }]);
+
+PokedexControllers.filter('fullyEvolved', function(){
+  return function(pokemon){
+    var list = [];
+    for(var i = 0; i<pokemon.length; i++){
+      var mon = pokemon[i];
+      if(mon.evolutions.length === 0) {
+        list.push(mon);
+      }
+    }
+    return list;
+  };
+});
 
 PokedexControllers.filter('onlyTypes',function(){
   return function(pokemon,valid_types){
