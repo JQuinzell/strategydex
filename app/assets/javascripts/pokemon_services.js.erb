@@ -4,7 +4,7 @@ app.factory('pokedex', ['$http', function($http){
   var pokeObj = {};
   
   pokeObj.all = function(){
-    return $http.get('<%= asset_path("pokedex.json") %>');
+    return $http.get('<%= asset_path("pokedex.json") %>', {cache: true});
   };
   
   return pokeObj;
