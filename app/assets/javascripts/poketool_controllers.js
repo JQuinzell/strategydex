@@ -23,7 +23,7 @@ PokedexControllers.controller('PokedexController', ['$scope', 'pokedex', '$filte
     } else {
       $scope.query.types.splice(index, 1);
     }
-    $scope.pokedex = $filter('onlyTypes')(pokedex, $scope.query.types);
+    $scope.pokedex = $filter('onlyTypes')(pokedata, $scope.query.types);
   };
   
   $scope.toggleNfe = function(){
@@ -81,17 +81,15 @@ PokedexControllers.controller('detailsController',
 PokedexControllers.filter('onlyTypes',function(){
   return function(pokemon,valid_types){
     var list = [];
-
     for(var i = 0; i<pokemon.length; i++){
       var mon = pokemon[i];
       for(var j = 0; j<mon.types.length; j++){
-        if(valid_types.indexOf(mon.types[j].name) > -1){
+        if(valid_types.indexOf(mon.types[j]) > -1){
           list.push(mon);
           break;
         }
       }
     }
-    console.log(list);
     return list;
   };
 });
