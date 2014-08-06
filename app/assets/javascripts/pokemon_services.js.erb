@@ -1,10 +1,17 @@
 var app = angular.module('PokemonServices', []);
 
-app.factory('pokedex', ['$http', function($http){
+app.factory('pokedex', ['$http', '$q', function($http, $q){
   var pokeObj = {};
-  
+  var apiPath = "api/v1/pokemons/";
   pokeObj.all = function(){
     return $http.get('<%= asset_path("pokedex.json") %>', {cache: true});
+  };
+  pokeObj.find = function(id){
+    var d = $q.defer();
+    $http.get(apiPath + id, {cache: true}).success(function(data){
+      d.resolve(data);
+    });
+    return d.promise;
   };
   
   return pokeObj;
