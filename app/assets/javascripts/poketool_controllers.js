@@ -38,7 +38,7 @@ PokedexControllers.controller('PokedexController', ['$scope', 'pokedex', '$filte
 }]);
 
 PokedexControllers.controller('detailsController',
-['$scope', '$routeParams', 'pokeBank', function($scope, $routeParams, pokeBank) {
+['$scope', '$routeParams', 'pokedex', function($scope, $routeParams, pokedex) {
 
 	function set_directions(){
 		var last = 718;
@@ -59,14 +59,10 @@ PokedexControllers.controller('detailsController',
 
 	set_directions();
 
-	pokeBank.get($routeParams.pokemonId).then(
-		function(pokemon){
-      console.log("wtf");
-			console.log(pokemon);
-			$scope.pokemon = pokemon;
-			pokeBank.put(pokemon);
-		}
-	);
+	pokedex.find($routeParams.pokemonId).then(function(data){
+    console.log(data);
+    $scope.pokemon = data;
+  });
 }]);
 
 PokedexControllers.filter('fullyEvolved', function(){
