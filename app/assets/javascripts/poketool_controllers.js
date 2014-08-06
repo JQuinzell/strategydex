@@ -38,7 +38,12 @@ PokedexControllers.controller('PokedexController', ['$scope', 'pokedex', '$filte
 }]);
 
 PokedexControllers.controller('detailsController',
-['$scope', '$routeParams', 'pokedex', function($scope, $routeParams, pokedex) {
+['$scope', '$routeParams', '$filter', 'pokedex', 'weaknessChecker', function($scope, $routeParams, $filter, pokedex, weaknessChecker) {
+
+  var pokes;
+  pokedex.all().success(function(data){
+    pokes = data;
+	});
 
 	function set_directions(){
 		var last = 718;
@@ -63,6 +68,21 @@ PokedexControllers.controller('detailsController',
     console.log(data);
     $scope.pokemon = data;
   });
+  
+  $scope.synergize = function(){
+    var list;
+    list = $filter('fullyEvolved')(pokes);
+    for(var i = 0; i<list.length; i++){
+      var defended_types = [];
+      for(var j = 0; j<$scope.pokemon.types.length; j++){
+        defended_types.push($scope.pokemon.types[j].name);
+      }
+      console.log("Synergy with:",list[i].name);
+      console.log(weaknessChecker.check_synergy(list[i].types,defended_types ));
+    }
+  };
+  
+  
 }]);
 
 PokedexControllers.filter('fullyEvolved', function(){
