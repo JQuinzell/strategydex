@@ -1,6 +1,3 @@
-<% environment.context_class.instance_eval { include Rails.application.routes.url_helpers } %>
-
-
 var pokeTools = angular.module('pokeTools', [
 	'ngRoute',
 	'PokedexControllers',
