@@ -9,3 +9,117 @@ app.factory('pokedex', ['$http', function($http){
   
   return pokeObj;
 }]);
+
+app.factory('weaknessChecker', function(){
+  var service = {};
+  var type_map = {};
+  type_map.normal = {weaknesses: ["fighting"], resistances: [], immunities: ["ghost"]};
+  type_map.fighting = {weaknesses: ["flying", "psychic", "fairy"], resistances: ["rock", "bug", "dark"], immunities: []};
+  type_map.flying = {weaknesses: ["rock", "electric", "ice"], resistances: ["fighting", "bug", "grass"], immunities: ["ground"]};
+  type_map.poison = {weaknesses: ["ground", "psychic"], resistances: ["fighting", "poison", "bug", "grass", "fairy"], immunities: []};
+  type_map.ground = {weaknesses: ["water", "grass", "ice"], resistances: ["poison", "rock", "ice"], immunities: ["electric"]};
+  type_map.rock = {weaknesses: ["fighting", "ground", "water", "grass", "steel"], resistances: ["normal", "flying", "poison", "fire"], immunities: []};
+  type_map.bug = {weaknesses: ["flying", "rock", "fire"], resistances: ["fighting", "ground", "grass"], immunities: []};
+  type_map.ghost = {weaknesses: ["ghost", "dark"], resistances: ["poison", "bug"], immunities: ["normal", "fighting"]};
+  type_map.steel = {weaknesses: ["fighting", "ground", "fire"], resistances: ["normal", "flying", "rock", "bug", "steel", "grass", "psychic", "ice", "dragon", "fairy"], immunities: ["poison"]};
+  type_map.fire = {weaknesses: ["ground", "rock", "water"], resistances: ["bug", "steel", "fire", "grass", "ice", "fairy"], immunities: []};
+  type_map.water = {weaknesses: ["grass", "electric"], resistances: ["steel", "fire", "water", "ice"], immunities: []};
+  type_map.grass = {weaknesses: ["flying", "poison", "bug", "fire", "ice"], resistances: ["ground", "water", "grass", "electric"], immunities: []};
+  type_map.electric = {weaknesses: ["ground"], resistances: ["flying", "steel", "electric"], immunities: []};
+  type_map.psychic = {weaknesses: ["bug", "ghost", "dark"], resistances: ["fighting", "psychic"], immunities: []};
+  type_map.ice = {weaknesses: ["fighting", "rock", "steel", "fire"], resistances: ["ice"], immunities: []};
+  type_map.dragon = {weaknesses: ["dragon", "ice", "fairy"], resistances: ["fire", "water", "grass", "electric"], immunities: []};
+  type_map.dark = {weaknesses: ["fighting", "bug", "fairy"], resistances: ["ghost", "dark"], immunities: ["psychic"]};
+  type_map.fairy = {weaknesses: ["poison", "steel"], resistances: ["fighting", "bug", "dark"], immunities: ["dragon"]};
+  
+  function type_multipliers(types) {
+    var multipliers = {};
+   
+    for(var i = 0; i<types.length; i++){
+      //current type in provided types
+      var current_type = types[i];
+      //cycle through weaknesses of current type
+      for(var j = 0; j<type_map[current_type].weaknesses.length; j++){
+        var weakness = type_map[current_type].weaknesses[j];
+        if(multipliers[weakness] === undefined){
+          multipliers[weakness] = 1;
+        }
+        multipliers[weakness] *= 2;
+      }
+      for(var k = 0; k<type_map[current_type].resistances.length; k++){
+        var resistance = type_map[current_type].resistances[k];
+        multipliers[resistance] = multipliers[resistance] || 1;
+        multipliers[resistance] /= 2;
+      }
+      for(var l = 0; l<type_map[current_type].immunities.length; l++){
+        var immunity = type_map[current_type].immunities[l];
+        multipliers[immunity] = 0;
+      }
+    }    
+    return multipliers;
+  }
+  
+  service.check_synergy = function(target_types, defended_types){
+    var target_multipliers = type_multipliers(target_types);
+    console.log("Target multipliers",target_multipliers);
+    var defended_multipliers = type_multipliers(defended_types);
+    console.log("Defended multipliers",defended_multipliers);
+    var defended_score = 0;
+    var target_score = 0;
+    var synergy;
+    
+    console.log("Weaknesses for", defended_types);
+    for(var defended_type in defended_multipliers){
+      switch(defended_multipliers[defended_type]){
+        case 2:
+          console.log("defended 2x weak to",defended_type,"adding 1");
+          defended_score++;
+          break;
+        case 4:
+          console.log("defended 4x weak to",defended_type,"adding 1.5");
+          defended_score += 1.5;
+          break;
+        default:
+          console.log("Deleting",defended_type)
+          delete defended_multipliers[defended_type];
+      }
+    }
+    
+    console.log("Checking types", target_types);
+    for(var target_type in target_multipliers){
+      var defended_mult = defended_multipliers[target_type];
+      if(defended_mult){
+        switch(target_multipliers[target_type]){
+          case 0:
+            console.log("Immune to",target_type,"adding 2");
+            target_score += 2;
+            break;
+          case 0.5:
+            console.log("2x Resists type",target_type);
+            target_score++;
+            break;
+          case 0.25:
+            console.log("4x Resists type",target_type);
+            target_score += 1.5;
+            break;
+          case 2:
+            console.log("2x weak to type",target_type);
+            target_score -= defended_mult === 2 ? 1 : 1.5;
+            break;
+          case 4:
+            console.log("4x weak to type",target_type);
+            target_score -= defended_mult === 2 ? 1.5 : 2;
+            break;
+        }
+      }
+    }
+    console.log("Weakness score:",defended_score);
+    console.log("Defender score:",target_score);
+    synergy = target_score/defended_score;
+    console.log(synergy);
+    return Math.round(synergy * 100);
+  };
+    
+
+  return service;
+});
