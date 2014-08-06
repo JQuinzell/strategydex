@@ -1,6 +1,6 @@
 <section>
 	<h1>{{pokemon.national_id}} - {{pokemon.name}}</h1>
-
+  <button ng-click="synergize()">Check Synergy</button>
 	<ul>
 		<li  ng-repeat="type in pokemon.types">{{type.name}}</li>
 	</ul>
