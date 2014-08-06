@@ -31,6 +31,18 @@ app.factory('weaknessChecker', function(){
   type_map.dragon = {weaknesses: ["dragon", "ice", "fairy"], resistances: ["fire", "water", "grass", "electric"], immunities: []};
   type_map.dark = {weaknesses: ["fighting", "bug", "fairy"], resistances: ["ghost", "dark"], immunities: ["psychic"]};
   type_map.fairy = {weaknesses: ["poison", "steel"], resistances: ["fighting", "bug", "dark"], immunities: ["dragon"]};
+  //abilities
+  type_map["volt absorb"] = {weaknesses: [], resistances: [], immunities: ["electric"]};
+  type_map["sap sipper"] = {weaknesses: [], resistances: [], immunities: ["grass"]};
+  type_map["water absorb"]  = {weaknesses: [], resistances: [], immunities: ["water"]};
+  type_map["storm drain"] = {weaknesses: [], resistances: [], immunities: ["water"]};
+  type_map["flash fire"] = {weaknesses: [], resistances: [], immunities: ["fire"]};
+  type_map["dry skin"] = {weaknesses: [], resistances: [], immunities: ["water"]};
+  type_map.heatproof = {weaknesses: [], resistances: ["fire"], immunities: []};
+  type_map["thick fat"] = {weaknesses: [], resistances: ["fire", "ice"], immunities: []};
+  type_map.lightningrod = {weaknesses: [], resistances: [], immunities: ["electric"]};
+  type_map.levitate = {weaknesses: [], resistances: [], immunities: ["ground"]};
+  type_map["motor drive"] = {weaknesses: [], resistances: [], immunities: ["electric"]};
   
   function type_multipliers(types) {
     var multipliers = {};
