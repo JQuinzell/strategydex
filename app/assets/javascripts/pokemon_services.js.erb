@@ -119,6 +119,9 @@ app.factory('weaknessChecker', function(){
         }
       }
     }
+//     console.log(target_multipliers);
+//     console.log(defended_multipliers);
+
     synergy = target_score/defended_score;
     return Math.round(synergy * 100);
   };
