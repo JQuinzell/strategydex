@@ -2,6 +2,6 @@
   <span class="number"><a ng-href="#/details/{{pkmn.national_id}}">{{pkmn.national_id}}</a></span>
 	<div class="sprite"></div>
   <h2 class="name">{{pkmn.name}}</h2>
-  <span class="type" ng-repeat="type in pkmn.types">{{type}}</span>
+  <span class="type" ng-repeat="type in pkmn.types">{{type.name}}</span>
   <span class="type">HP-{{pkmn.hp}} Attack-{{pkmn.attack}} Defense-{{pkmn.defense}} Speed-{{pkmn.speed}} Sp. Atk-{{pkmn.sp_atk}} Sp. Def-{{pkmn.sp_def}}</span>
 </div>
