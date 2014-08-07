@@ -5,7 +5,7 @@ PokedexControllers.controller('PokedexController', ['$scope', 'pokedex', '$filte
   $scope.type_list = ["normal", "fighting", "flying", "poison", "ground", "rock", "bug", "ghost", "steel", "fire", "water", "grass", "electric", "psychic", "ice", "dragon", "dark", "fairy"];
  $scope.query = {
     types: [],
-    order: 'id',
+    order: 'national_id',
     nfe: false
   };
   for(var i = 0; i<$scope.type_list.length; i++){
