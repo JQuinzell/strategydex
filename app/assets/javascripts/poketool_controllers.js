@@ -72,13 +72,18 @@ PokedexControllers.controller('detailsController',
   $scope.synergize = function(){
     var list;
     list = $filter('fullyEvolved')(pokes);
+    $scope.synergy_scores = [];
     for(var i = 0; i<list.length; i++){
-      var defended_types = [];
+      var types = [];
+      var score = {name: list[i].name};
       for(var j = 0; j<$scope.pokemon.types.length; j++){
-        defended_types.push($scope.pokemon.types[j].name);
+        types.push($scope.pokemon.types[j].name);
       }
-      console.log("Synergy with:",list[i].name);
-      console.log(weaknessChecker.check_synergy(list[i].types,defended_types ));
+      //How well current pokemon is defended by x
+      score.defended = weaknessChecker.check_synergy(list[i].types, types);
+      //How well current pokemon defends x
+      score.defends = weaknessChecker.check_synergy(types, list[i].types);
+      $scope.synergy_scores.push(score);
     }
   };
   

@@ -7,4 +7,16 @@
 	<a href="#/">Back</a>
 	<a href="#/details/{{prevPoke}}">Prev</a>
 	<a href="#/details/{{nextPoke}}">Next</a>
+  <table style="color:white">
+    <tr>
+      <th>Name</th>
+      <th>Defends for {{pokemon.name}}</th>
+      <th>Defended by {{pokemon.name}}</th>
+    </tr>
+    <tr ng-repeat="score in synergy_scores | orderBy:'-defended'">
+      <th>{{score.name}}</th>
+      <th>{{score.defended}}%</th>
+      <th>{{score.defends}}%</th>
+    </tr>
+  </table>
 </section>
