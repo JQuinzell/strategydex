@@ -76,13 +76,10 @@ PokedexControllers.controller('detailsController',
     for(var i = 0; i<list.length; i++){
       var types = [];
       var score = {name: list[i].name};
-      for(var j = 0; j<$scope.pokemon.types.length; j++){
-        types.push($scope.pokemon.types[j].name);
-      }
       //How well current pokemon is defended by x
-      score.defended = weaknessChecker.check_synergy(list[i].types, types);
+      score.defended = weaknessChecker.check_synergy(list[i], $scope.pokemon);
       //How well current pokemon defends x
-      score.defends = weaknessChecker.check_synergy(types, list[i].types);
+      score.defends = weaknessChecker.check_synergy($scope.pokemon, list[i]);
       $scope.synergy_scores.push(score);
     }
   };

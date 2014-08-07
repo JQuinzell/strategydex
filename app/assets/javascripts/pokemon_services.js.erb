@@ -51,8 +51,12 @@ app.factory('weaknessChecker', function(){
   type_map.levitate = {weaknesses: [], resistances: [], immunities: ["ground"]};
   type_map["motor drive"] = {weaknesses: [], resistances: [], immunities: ["electric"]};
   
-  function type_multipliers(types) {
+  function type_multipliers(pokemon) {
     var multipliers = {};
+    var types = [];
+    for(var x = 0; x<pokemon.types.length; x++){
+      types.push(pokemon.types[x].name);
+    }
     for(var i = 0; i<types.length; i++){
       //current type in provided types
       var current_type = types[i];
@@ -73,13 +77,15 @@ app.factory('weaknessChecker', function(){
         var immunity = type_map[current_type].immunities[l];
         multipliers[immunity] = 0;
       }
-    }    
+    }
+//     console.log(pokemon.name);
+//     console.log(multipliers);
     return multipliers;
   }
   
-  service.check_synergy = function(target_types, defended_types){
-    var target_multipliers = type_multipliers(target_types);
-    var defended_multipliers = type_multipliers(defended_types);
+  service.check_synergy = function(target_pokemon, defended_pokemon){
+    var target_multipliers = type_multipliers(target_pokemon);
+    var defended_multipliers = type_multipliers(defended_pokemon);
     var defended_score = 0;
     var target_score = 0;
     var synergy;
@@ -120,7 +126,9 @@ app.factory('weaknessChecker', function(){
       }
     }
 //     console.log(target_multipliers);
+//     console.log(target_score);
 //     console.log(defended_multipliers);
+//     console.log(defended_score);
 
     synergy = target_score/defended_score;
     return Math.round(synergy * 100);
