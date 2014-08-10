@@ -1,0 +1,25 @@
+<div ng-controller="hpController">
+  <h1>Hidden Power Calculator</h1>
+
+  <form>
+    <label for="">HP</label>
+    <input type="text" only-digits ng-change="calcType()" ng-model="stat_mapping.hp.iv">
+
+    <label for="">Attack</label>
+    <input type="text" only-digits ng-change="calcType()" ng-model="stat_mapping.att.iv">
+
+    <label for="">Defense</label>
+    <input type="text" only-digits ng-change="calcType()" ng-model="stat_mapping.def.iv"><br>
+
+    <label for="">Speed</label>
+    <input type="text" only-digits ng-change="calcType()" ng-model="stat_mapping.spd.iv">
+
+    <label for="">Special Attack</label>
+    <input type="text" only-digits ng-change="calcType()" ng-model="stat_mapping.satt.iv">
+
+    <label for="">Special Defense</label>
+    <input type="text" only-digits ng-change="calcType()" ng-model="stat_mapping.sdef.iv">
+  </form>
+
+  <p>{{ hp_type }}</p>
+</div>
