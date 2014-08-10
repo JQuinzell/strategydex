@@ -83,8 +83,8 @@ app.factory('weaknessChecker', ['typeMapping', function(typeMapping){
         multipliers[immunity] = 0;
       }
     }
-//     console.log(pokemon.name);
-//     console.log(multipliers);
+    console.info(pokemon.name);
+    console.info(multipliers);
     return multipliers;
   }
   
@@ -101,7 +101,7 @@ app.factory('weaknessChecker', ['typeMapping', function(typeMapping){
           defended_score++;
           break;
         case 4:
-          defended_score += 1.5;
+          defended_score += 2;
           break;
         default:
           delete defended_multipliers[defended_type];
@@ -113,27 +113,32 @@ app.factory('weaknessChecker', ['typeMapping', function(typeMapping){
       if(defended_mult){
         switch(target_multipliers[target_type]){
           case 0:
-            target_score += 2;
+            console.info("Immune - adding", defended_mult === 2 ? 2 : 2.5);
+            target_score += defended_mult === 2 ? 2 : 2.5;
             break;
           case 0.5:
-            target_score++;
+            console.info("Resists, adding", defended_mult === 2 ? 1 : 1.5);
+            target_score += defended_mult === 2 ? 1 : 1.5;
             break;
           case 0.25:
-            target_score += 1.5;
+            console.info("4x Resists, adding", defended_mult === 2 ? 1.5 : 2);
+            target_score += defended_mult === 2 ? 1.5 : 2;
             break;
           case 2:
+            console.info("Weak, subtracting", defended_mult === 2 ? 1 : 1.5);
             target_score -= defended_mult === 2 ? 1 : 1.5;
             break;
           case 4:
+            console.info("4x Weak, subtracting", defended_mult === 2 ? 1.5 : 2);
             target_score -= defended_mult === 2 ? 1.5 : 2;
             break;
         }
       }
     }
-//     console.log(target_multipliers);
-//     console.log(target_score);
-//     console.log(defended_multipliers);
-//     console.log(defended_score);
+    console.info(target_multipliers);
+    console.info(target_score);
+    console.info(defended_multipliers);
+    console.info(defended_score);
 
     synergy = target_score/defended_score;
     return Math.round(synergy * 100);
