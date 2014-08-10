@@ -25,6 +25,11 @@ pokedex.each do |data|
     name = type["name"]
     pokemon.types << Type.find_or_create_by(name: name)
   end
+  pokemon.abilities.clear
+  data["abilities"].each do |ab|
+    name = ab["name"]
+    pokemon.abilities << Ability.find_or_create_by(name: name)
+  end
   evos = []
   (evos << data["evolutions"]).flatten!
   evos.each do |p|
