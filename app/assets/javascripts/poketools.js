@@ -1,7 +1,6 @@
 var pokeTools = angular.module('pokeTools', [
 	'ngRoute',
-	'PokedexControllers',
-  'templates'
+	'PokedexControllers'
 ]);
 
 pokeTools.config(['$routeProvider', function($routeProvider){

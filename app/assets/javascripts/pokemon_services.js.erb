@@ -17,8 +17,7 @@ app.factory('pokedex', ['$http', '$q', function($http, $q){
   return pokeObj;
 }]);
 
-app.factory('weaknessChecker', function(){
-  var service = {};
+app.factory('typeMapping', function(){
   var type_map = {};
   type_map.normal = {weaknesses: ["fighting"], resistances: [], immunities: ["ghost"]};
   type_map.fighting = {weaknesses: ["flying", "psychic", "fairy"], resistances: ["rock", "bug", "dark"], immunities: []};
@@ -50,6 +49,12 @@ app.factory('weaknessChecker', function(){
   type_map.lightningrod = {weaknesses: [], resistances: [], immunities: ["electric"]};
   type_map.levitate = {weaknesses: [], resistances: [], immunities: ["ground"]};
   type_map["motor drive"] = {weaknesses: [], resistances: [], immunities: ["electric"]};
+
+  return type_map;
+});
+
+app.factory('weaknessChecker', ['typeMapping', function(typeMapping){
+  var service = {};
   
   function type_multipliers(pokemon) {
     var multipliers = {};
@@ -61,20 +66,20 @@ app.factory('weaknessChecker', function(){
       //current type in provided types
       var current_type = types[i];
       //cycle through weaknesses of current type
-      for(var j = 0; j<type_map[current_type].weaknesses.length; j++){
-        var weakness = type_map[current_type].weaknesses[j];
+      for(var j = 0; j<typeMapping[current_type].weaknesses.length; j++){
+        var weakness = typeMapping[current_type].weaknesses[j];
         if(multipliers[weakness] === undefined){
           multipliers[weakness] = 1;
         }
         multipliers[weakness] *= 2;
       }
-      for(var k = 0; k<type_map[current_type].resistances.length; k++){
-        var resistance = type_map[current_type].resistances[k];
+      for(var k = 0; k<typeMapping[current_type].resistances.length; k++){
+        var resistance = typeMapping[current_type].resistances[k];
         multipliers[resistance] = multipliers[resistance] || 1;
         multipliers[resistance] /= 2;
       }
-      for(var l = 0; l<type_map[current_type].immunities.length; l++){
-        var immunity = type_map[current_type].immunities[l];
+      for(var l = 0; l<typeMapping[current_type].immunities.length; l++){
+        var immunity = typeMapping[current_type].immunities[l];
         multipliers[immunity] = 0;
       }
     }
@@ -136,4 +141,4 @@ app.factory('weaknessChecker', function(){
     
 
   return service;
-});
+}]);
