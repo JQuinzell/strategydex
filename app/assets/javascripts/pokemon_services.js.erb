@@ -43,7 +43,7 @@ app.factory('typeMapping', function(){
   type_map["water absorb"]  = {weaknesses: [], resistances: [], immunities: ["water"]};
   type_map["storm drain"] = {weaknesses: [], resistances: [], immunities: ["water"]};
   type_map["flash fire"] = {weaknesses: [], resistances: [], immunities: ["fire"]};
-  type_map["dry skin"] = {weaknesses: [], resistances: [], immunities: ["water"]};
+  type_map["dry skin"] = {weaknesses: ["fire"], resistances: [], immunities: ["water"]};
   type_map.heatproof = {weaknesses: [], resistances: ["fire"], immunities: []};
   type_map["thick fat"] = {weaknesses: [], resistances: ["fire", "ice"], immunities: []};
   type_map.lightningrod = {weaknesses: [], resistances: [], immunities: ["electric"]};
@@ -88,9 +88,20 @@ app.factory('weaknessChecker', ['typeMapping', function(typeMapping){
     return multipliers;
   }
   
+  function typify_abilities(pokemon){
+    for(var i = 0; i<pokemon.abilities.length; i++){
+      name = pokemon.abilities[i].name
+      if(typeMapping[name] !== undefined){
+        pokemon.types.push({name: name});
+      }
+    }
+    
+    return pokemon;
+  }
+  
   service.check_synergy = function(target_pokemon, defended_pokemon){
-    var target_multipliers = type_multipliers(target_pokemon);
-    var defended_multipliers = type_multipliers(defended_pokemon);
+    var target_multipliers = type_multipliers(typify_abilities(target_pokemon));
+    var defended_multipliers = type_multipliers(typify_abilities(defended_pokemon));
     var defended_score = 0;
     var target_score = 0;
     var synergy;
