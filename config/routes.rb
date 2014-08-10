@@ -1,5 +1,6 @@
 Pokedex::Application.routes.draw do
   root "poketools#pokedex"
+  get "/calc", to: "poketools#calc"
   namespace :api, defaults: {format: 'json'} do
     namespace :v1 do
       resources :pokemons, only: [:index, :show]
