@@ -71,6 +71,7 @@ PokedexControllers.controller('detailsController',
   
   $scope.synergize = function(){
     var list;
+    var unsorted = [];
     list = $filter('fullyEvolved')(pokes);
     $scope.synergy_scores = [];
     for(var i = 0; i<list.length; i++){
@@ -80,7 +81,26 @@ PokedexControllers.controller('detailsController',
       score.defended = weaknessChecker.check_synergy(list[i], $scope.pokemon, score.defended_reasons);
       //How well current pokemon defends x
       score.defends = weaknessChecker.check_synergy($scope.pokemon, list[i], score.defender_reasons);
-      $scope.synergy_scores.push(score);
+      unsorted.push(score);
+    }
+    $scope.synergy_scores.push(unsorted[0]);
+    //literate through all unsorted
+    for(var j = 1; j<unsorted.length; j++){
+      //iterate through all with filtered value
+      unsorted[j].added = false;
+      for(var k = 0; k<$scope.synergy_scores.length; k++){
+        var item = $scope.synergy_scores[k];
+        if(lists_equal(unsorted[j].defended_reasons, item.defended_reasons) &&
+           lists_equal(unsorted[j].defender_reasons, item.defender_reasons)) {
+          item.name += ", " + unsorted[j].name;
+          unsorted[j].added = true;
+          break;
+        }
+      }
+      if(!unsorted[j].added){
+        delete unsorted[j].added;
+        $scope.synergy_scores.push(unsorted[j]);
+      }
     }
   };
   
@@ -115,3 +135,17 @@ PokedexControllers.filter('onlyTypes',function(){
     return list;
   };
 });
+
+function lists_equal(list, comparison){
+//   console.log("Testing equal lists:", list, "and", comparison);
+  if(list.length === comparison.length){
+    list.sort(); comparison.sort();
+    for(var i = 0; i<list.length; i++){
+      if(list[i] !== comparison[i]){
+        return false;
+      }
+    }
+    return true;
+  }
+  return false;
+}

@@ -15,7 +15,7 @@
       <th>Defended by {{pokemon.name}}</th>
       <th>Reasons</th>
     </tr>
-    <tr ng-repeat="score in synergy_scores | orderBy:'-defended'">
+    <tr ng-repeat="score in synergy_scores track by $index | orderBy:'-defended'">
       <th>{{score.name}}</th>
       <th>{{score.defended}}%</th>
       <th>
