@@ -98,54 +98,61 @@ app.factory('weaknessChecker', ['typeMapping', function(typeMapping){
     
     return pokemon;
   }
+
+  service.weakness_score = function(multipliers){
+    var score = 0;
+    for(var multiplier in multipliers){
+      switch(multipliers[multiplier]){
+        case 2:
+          score++;
+          break;
+        case 4:
+          score += 2;
+          break;
+      }
+    }
+    return score;    
+  }
+
+  function defender_score(multipliers, defending_multipliers){
+    var score = 0;
+    for(var type in multipliers){
+      var defended_mult = defending_multipliers[type];
+      if(defended_mult >= 2){
+        switch(multipliers[type]){
+          case 0:
+            console.info("Immune - adding", defended_mult === 2 ? 2 : 2.5);
+            score += defended_mult === 2 ? 2 : 2.5;
+            break;
+          case 0.5:
+            console.info("Resists, adding", defended_mult === 2 ? 1 : 1.5);
+            score += defended_mult === 2 ? 1 : 1.5;
+            break;
+          case 0.25:
+            console.info("4x Resists, adding", defended_mult === 2 ? 1.5 : 2);
+            score += defended_mult === 2 ? 1.5 : 2;
+            break;
+          case 2:
+            console.info("Weak, subtracting", defended_mult === 2 ? 1 : 1.5);
+            score -= defended_mult === 2 ? 1 : 1.5;
+            break;
+          case 4:
+            console.info("4x Weak, subtracting", defended_mult === 2 ? 1.5 : 2);
+            score -= defended_mult === 2 ? 1.5 : 2;
+            break;
+        }
+      }
+    }    
+    return score;
+  }
   
   service.check_synergy = function(target_pokemon, defended_pokemon){
     var target_multipliers = type_multipliers(typify_abilities(target_pokemon));
     var defended_multipliers = type_multipliers(typify_abilities(defended_pokemon));
-    var defended_score = 0;
-    var target_score = 0;
+    var defended_score = service.weakness_score(defended_multipliers);
+    var target_score = defender_score(target_multipliers, defended_multipliers);
     var synergy;
-    
-    for(var defended_type in defended_multipliers){
-      switch(defended_multipliers[defended_type]){
-        case 2:
-          defended_score++;
-          break;
-        case 4:
-          defended_score += 2;
-          break;
-        default:
-          delete defended_multipliers[defended_type];
-      }
-    }
-    
-    for(var target_type in target_multipliers){
-      var defended_mult = defended_multipliers[target_type];
-      if(defended_mult){
-        switch(target_multipliers[target_type]){
-          case 0:
-            console.info("Immune - adding", defended_mult === 2 ? 2 : 2.5);
-            target_score += defended_mult === 2 ? 2 : 2.5;
-            break;
-          case 0.5:
-            console.info("Resists, adding", defended_mult === 2 ? 1 : 1.5);
-            target_score += defended_mult === 2 ? 1 : 1.5;
-            break;
-          case 0.25:
-            console.info("4x Resists, adding", defended_mult === 2 ? 1.5 : 2);
-            target_score += defended_mult === 2 ? 1.5 : 2;
-            break;
-          case 2:
-            console.info("Weak, subtracting", defended_mult === 2 ? 1 : 1.5);
-            target_score -= defended_mult === 2 ? 1 : 1.5;
-            break;
-          case 4:
-            console.info("4x Weak, subtracting", defended_mult === 2 ? 1.5 : 2);
-            target_score -= defended_mult === 2 ? 1.5 : 2;
-            break;
-        }
-      }
-    }
+        
     console.info(target_multipliers);
     console.info(target_score);
     console.info(defended_multipliers);
