@@ -179,11 +179,11 @@ app.factory('weaknessChecker', ['typeMapping', function(typeMapping){
     return score;
   }
   
-  service.check_synergy = function(target_pokemon, defended_pokemon){
+  service.check_synergy = function(target_pokemon, defended_pokemon, reasons){
     var target_multipliers = type_multipliers(typify_abilities(target_pokemon));
     var defended_multipliers = type_multipliers(typify_abilities(defended_pokemon));
     var defended_score = service.weakness_score(defended_multipliers);
-    var target_score = service.defender_score(target_multipliers, defended_multipliers);
+    var target_score = service.defender_score(target_multipliers, defended_multipliers, reasons);
     var synergy;
         
     console.info(target_multipliers);
