@@ -11,12 +11,30 @@
     <tr>
       <th>Name</th>
       <th>Defends for {{pokemon.name}}</th>
+      <th>Reasons</th>
       <th>Defended by {{pokemon.name}}</th>
+      <th>Reasons</th>
     </tr>
     <tr ng-repeat="score in synergy_scores | orderBy:'-defended'">
       <th>{{score.name}}</th>
       <th>{{score.defended}}%</th>
+      <th>
+        <ul>
+        <div ng-repeat="reason in score.defended_reasons">
+          <li>{{reason}}</li>
+        </div>
+        </ul>
+        <hr>
+      </th>
       <th>{{score.defends}}%</th>
+      <th>
+        <ul>
+        <div ng-repeat="reason in score.defender_reasons">
+          <li>{{reason}}</li>
+        </div>
+        </ul>
+        <hr>
+      </th>
     </tr>
   </table>
 </section>
