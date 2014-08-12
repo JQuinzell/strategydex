@@ -114,31 +114,64 @@ app.factory('weaknessChecker', ['typeMapping', function(typeMapping){
     return score;    
   }
 
-  function defender_score(multipliers, defending_multipliers){
+  service.defender_score = function(multipliers, defending_multipliers, reasons){
     var score = 0;
+    if(reasons === undefined){
+      reasons = [];
+    }
     for(var type in multipliers){
       var defended_mult = defending_multipliers[type];
       if(defended_mult >= 2){
         switch(multipliers[type]){
           case 0:
             console.info("Immune - adding", defended_mult === 2 ? 2 : 2.5);
-            score += defended_mult === 2 ? 2 : 2.5;
+            if(defended_mult === 2){
+              score += 2;
+              reasons.push("Immune to weakness: " + type);
+            } else {
+              score += 2.5;
+              reasons.push("Immune to 4x weakness: " + type);
+            }
             break;
           case 0.5:
             console.info("Resists, adding", defended_mult === 2 ? 1 : 1.5);
-            score += defended_mult === 2 ? 1 : 1.5;
+            if(defended_mult === 2){
+              score += 1;
+              reasons.push("Resists weakness: " + type);
+            } else {
+              score += 1.5;
+              reasons.push("Resists 4x weakness: " + type);
+            }
             break;
           case 0.25:
             console.info("4x Resists, adding", defended_mult === 2 ? 1.5 : 2);
-            score += defended_mult === 2 ? 1.5 : 2;
+            if(defended_mult === 2){
+              score += 1.5;
+              reasons.push("4x Resists weakness: " + type);
+            } else {
+              score += 2;
+              reasons.push("4x Resists 4x weakness: " + type);
+            }
             break;
           case 2:
             console.info("Weak, subtracting", defended_mult === 2 ? 1 : 1.5);
-            score -= defended_mult === 2 ? 1 : 1.5;
+            if(defended_mult === 2){
+              score -= 1;
+              reasons.push("Weak to weakness: " + type);
+            } else {
+              score -= 1.5;
+              reasons.push("Weak to 4x weakness: " + type);
+            }
             break;
           case 4:
             console.info("4x Weak, subtracting", defended_mult === 2 ? 1.5 : 2);
-            score -= defended_mult === 2 ? 1.5 : 2;
+            if(defended_mult === 2){
+              score -= 1.5;
+              reasons.push("4x Weak to weakness: " + type);
+            } else {
+              score = 2;
+              reasons.push("4x Weak to 4x weakness: " + type);
+            }
             break;
         }
       }
@@ -150,7 +183,7 @@ app.factory('weaknessChecker', ['typeMapping', function(typeMapping){
     var target_multipliers = type_multipliers(typify_abilities(target_pokemon));
     var defended_multipliers = type_multipliers(typify_abilities(defended_pokemon));
     var defended_score = service.weakness_score(defended_multipliers);
-    var target_score = defender_score(target_multipliers, defended_multipliers);
+    var target_score = service.defender_score(target_multipliers, defended_multipliers);
     var synergy;
         
     console.info(target_multipliers);
