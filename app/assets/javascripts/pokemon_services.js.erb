@@ -58,7 +58,7 @@ app.factory('weaknessChecker', ['typeMapping', function(typeMapping){
   
   function type_multipliers(pokemon) {
     var multipliers = {};
-    var types = [];
+    var types = typify_abilities(pokemon);
     for(var x = 0; x<pokemon.types.length; x++){
       types.push(pokemon.types[x].name);
     }
@@ -89,14 +89,15 @@ app.factory('weaknessChecker', ['typeMapping', function(typeMapping){
   }
   
   function typify_abilities(pokemon){
+    var result = [];
     for(var i = 0; i<pokemon.abilities.length; i++){
       name = pokemon.abilities[i].name
       if(typeMapping[name] !== undefined){
-        pokemon.types.push({name: name});
+        result.push(name);
       }
     }
     
-    return pokemon;
+    return result;
   }
 
   service.weakness_score = function(multipliers){
@@ -180,8 +181,8 @@ app.factory('weaknessChecker', ['typeMapping', function(typeMapping){
   }
   
   service.check_synergy = function(target_pokemon, defended_pokemon, reasons){
-    var target_multipliers = type_multipliers(typify_abilities(target_pokemon));
-    var defended_multipliers = type_multipliers(typify_abilities(defended_pokemon));
+    var target_multipliers = type_multipliers(target_pokemon);
+    var defended_multipliers = type_multipliers(defended_pokemon);
     var defended_score = service.weakness_score(defended_multipliers);
     var target_score = service.defender_score(target_multipliers, defended_multipliers, reasons);
     var synergy;
