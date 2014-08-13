@@ -7,44 +7,44 @@
 	<a href="#/">Back</a>
 	<a href="#/details/{{prevPoke}}">Prev</a>
 	<a href="#/details/{{nextPoke}}">Next</a>
-  <table style="color:white">
+  <table style="color:white" ng-show="query.order">
     <tr>
       <th>Name</th>
-      <th>Defends for {{pokemon.name}}</th>
+      <th ng-click="setOrder('defended')">Defends for {{pokemon.name}}</th>
       <th>Reasons</th>
-      <th>Defended by {{pokemon.name}}</th>
+      <th ng-click="setOrder('defends')">Defended by {{pokemon.name}}</th>
       <th>Reasons</th>
-      <th>Total</th>
+      <th ng-click="setOrder('total')">Total</th>
     </tr>
-    <tr ng-repeat="score in synergy_scores | orderBy:'-total'">
-      <th>
+    <tr ng-repeat="score in synergy_scores | orderBy:query.order:query.dir">
+      <td>
         <ul>
         <div ng-repeat="name in score.names">
           <li>{{name}}</li>
         </div>
         </ul>
-      </th>
-      <th>{{score.defended}}%</th>
-      <th>
+      </td>
+      <td>{{score.defended}}%</td>
+      <td>
         <ul>
         <div ng-repeat="reason in score.defended_reasons">
           <li>{{reason}}</li>
         </div>
         </ul>
         <hr>
-      </th>
-      <th>{{score.defends}}%</th>
-      <th>
+      </td>
+      <td>{{score.defends}}%</td>
+      <td>
         <ul>
         <div ng-repeat="reason in score.defender_reasons">
           <li>{{reason}}</li>
         </div>
         </ul>
         <hr>
-      </th>
-      <th>
+      </td>
+      <td>
         {{score.total}}%
-      </th>
+      </td>
     </tr>
   </table>
 </section>
