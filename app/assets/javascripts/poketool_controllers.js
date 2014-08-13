@@ -83,23 +83,28 @@ PokedexControllers.controller('detailsController',
       score.defends = weaknessChecker.check_synergy($scope.pokemon, list[i], score.defender_reasons);
       unsorted.push(score);
     }
+
     $scope.synergy_scores.push(unsorted[0]);
     //literate through all unsorted
     for(var j = 1; j<unsorted.length; j++){
       //iterate through all with filtered value
-      unsorted[j].added = false;
+      var current = unsorted[j];
+      current.added = false;
       for(var k = 0; k<$scope.synergy_scores.length; k++){
         var item = $scope.synergy_scores[k];
-        if(lists_equal(unsorted[j].defended_reasons, item.defended_reasons) &&
-           lists_equal(unsorted[j].defender_reasons, item.defender_reasons)) {
-          item.name += ", " + unsorted[j].name;
-          unsorted[j].added = true;
+        console.log("Comparing", current,"to", item);
+        if(lists_equal(current.defended_reasons, item.defended_reasons) &&
+           lists_equal(current.defender_reasons, item.defender_reasons) &&
+           current.defended === item.defended &&
+           current.defends === item.defends) {
+          item.name += ", " + current.name;
+          current.added = true;
           break;
         }
       }
-      if(!unsorted[j].added){
-        delete unsorted[j].added;
-        $scope.synergy_scores.push(unsorted[j]);
+      if(!current.added){
+        delete current.added;
+        $scope.synergy_scores.push(current);
       }
     }
   };
