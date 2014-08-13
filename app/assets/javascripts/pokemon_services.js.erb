@@ -169,7 +169,7 @@ app.factory('weaknessChecker', ['typeMapping', function(typeMapping){
               score -= 1.5;
               reasons.push("4x Weak to weakness: " + type);
             } else {
-              score = 2;
+              score -= 2;
               reasons.push("4x Weak to 4x weakness: " + type);
             }
             break;
