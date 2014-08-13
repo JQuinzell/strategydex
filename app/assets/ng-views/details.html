@@ -16,7 +16,13 @@
       <th>Reasons</th>
     </tr>
     <tr ng-repeat="score in synergy_scores | orderBy:'-defended'">
-      <th>{{score.name}}</th>
+      <th>
+        <ul>
+        <div ng-repeat="name in score.names">
+          <li>{{name}}</li>
+        </div>
+        </ul>
+      </th>
       <th>{{score.defended}}%</th>
       <th>
         <ul>
