@@ -76,7 +76,7 @@ PokedexControllers.controller('detailsController',
     $scope.synergy_scores = [];
     for(var i = 0; i<list.length; i++){
       var types = [];
-      var score = {name: list[i].name, defended_reasons: [], defender_reasons: []};
+      var score = {names: [list[i].name], defended_reasons: [], defender_reasons: []};
       //How well current pokemon is defended by x
       score.defended = weaknessChecker.check_synergy(list[i], $scope.pokemon, score.defended_reasons);
       //How well current pokemon defends x
@@ -97,7 +97,7 @@ PokedexControllers.controller('detailsController',
            lists_equal(current.defender_reasons, item.defender_reasons) &&
            current.defended === item.defended &&
            current.defends === item.defends) {
-          item.name += ", " + current.name;
+          item.names.push(current.names[0]);
           current.added = true;
           break;
         }
