@@ -81,6 +81,7 @@ PokedexControllers.controller('detailsController',
       score.defended = weaknessChecker.check_synergy(list[i], $scope.pokemon, score.defended_reasons);
       //How well current pokemon defends x
       score.defends = weaknessChecker.check_synergy($scope.pokemon, list[i], score.defender_reasons);
+      score.total = Math.round((score.defended + score.defends) / 2);
       unsorted.push(score);
     }
 
