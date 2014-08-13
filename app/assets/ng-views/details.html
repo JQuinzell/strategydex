@@ -14,8 +14,9 @@
       <th>Reasons</th>
       <th>Defended by {{pokemon.name}}</th>
       <th>Reasons</th>
+      <th>Total</th>
     </tr>
-    <tr ng-repeat="score in synergy_scores | orderBy:'-defended'">
+    <tr ng-repeat="score in synergy_scores | orderBy:'-total'">
       <th>
         <ul>
         <div ng-repeat="name in score.names">
@@ -40,6 +41,9 @@
         </div>
         </ul>
         <hr>
+      </th>
+      <th>
+        {{score.total}}%
       </th>
     </tr>
   </table>
