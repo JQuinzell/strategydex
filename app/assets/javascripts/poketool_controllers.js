@@ -69,7 +69,17 @@ PokedexControllers.controller('detailsController',
     $scope.pokemon = data;
   });
   
+  $scope.setOrder = function(q){
+    if($scope.query.order === q){
+      $scope.query.dir = !$scope.query.dir;
+    } else {
+      $scope.query.order = q;
+      $scope.query.dir = 'reverse';
+    }
+  };
+  
   $scope.synergize = function(){
+    $scope.query = {order: 'total', dir: 'reverse'}
     var list;
     var unsorted = [];
     list = $filter('fullyEvolved')(pokes);
