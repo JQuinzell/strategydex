@@ -202,6 +202,15 @@ app.factory('weaknessChecker', ['typeMapping', function(typeMapping){
     return Math.round(synergy * 100);
   };
     
-
+  service.synergy_scores = function(defender, defended){
+    var score = {names: [defender.name], defender_reasons: [], defended_reasons: []};
+    
+    score.defender = service.check_synergy(defender, defended, score.defender_reasons);
+    score.defended = service.check_synergy(defended, defender, score.defended_reasons);
+    score.total = Math.round((score.defender + score.defended) / 2);
+    
+    return score;
+  };
+  
   return service;
 }]);
