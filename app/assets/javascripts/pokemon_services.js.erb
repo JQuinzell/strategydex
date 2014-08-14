@@ -59,9 +59,10 @@ app.factory('weaknessChecker', ['typeMapping', function(typeMapping){
   function type_multipliers(pokemon) {
     var multipliers = {};
     var types = [];
-    for(var x = 0; x<pokemon.types.length; x++){
-      types.push(pokemon.types[x].name);
+    for(var t = 0; t<pokemon.types.length; t++){
+      types.push(pokemon.types[t].name)
     }
+
     for(var i = 0; i<types.length; i++){
       //current type in provided types
       var current_type = types[i];
@@ -75,7 +76,9 @@ app.factory('weaknessChecker', ['typeMapping', function(typeMapping){
       }
       for(var k = 0; k<typeMapping[current_type].resistances.length; k++){
         var resistance = typeMapping[current_type].resistances[k];
-        multipliers[resistance] = multipliers[resistance] || 1;
+        if(multipliers[resistance] === undefined){
+          multipliers[resistance] = 1;
+        }
         multipliers[resistance] /= 2;
       }
       for(var l = 0; l<typeMapping[current_type].immunities.length; l++){
@@ -88,15 +91,21 @@ app.factory('weaknessChecker', ['typeMapping', function(typeMapping){
     return multipliers;
   }
   
-  function typify_abilities(pokemon){
+  function typify(pokemon){
+    var result = [];
+    //Add relevant abilities to type array
     for(var i = 0; i<pokemon.abilities.length; i++){
       name = pokemon.abilities[i].name
       if(typeMapping[name] !== undefined){
-        pokemon.types.push({name: name});
+        result.push(name);
       }
     }
+    //Add types
+    for(var i = 0; i<pokemon.types.length; i++){
+      result.push(pokemon.types[i].name);
+    }
     
-    return pokemon;
+    return result;
   }
 
   service.weakness_score = function(multipliers){
@@ -114,13 +123,13 @@ app.factory('weaknessChecker', ['typeMapping', function(typeMapping){
     return score;    
   }
 
-  service.defender_score = function(multipliers, defending_multipliers, reasons){
+  service.defender_score = function(multipliers, defended_multipliers, reasons){
     var score = 0;
     if(reasons === undefined){
       reasons = [];
     }
     for(var type in multipliers){
-      var defended_mult = defending_multipliers[type];
+      var defended_mult = defended_multipliers[type];
       if(defended_mult >= 2){
         switch(multipliers[type]){
           case 0:
@@ -179,22 +188,58 @@ app.factory('weaknessChecker', ['typeMapping', function(typeMapping){
     return score;
   }
   
-  service.check_synergy = function(target_pokemon, defended_pokemon, reasons){
-    var target_multipliers = type_multipliers(typify_abilities(target_pokemon));
-    var defended_multipliers = type_multipliers(typify_abilities(defended_pokemon));
-    var defended_score = service.weakness_score(defended_multipliers);
-    var target_score = service.defender_score(target_multipliers, defended_multipliers, reasons);
+  service.check_synergy = function(defender, defended, reasons){
+    var defender_mults = type_multipliers(defender);
+    var defended_mults = type_multipliers(defended);
+    
+    var defender_score = service.defender_score(defender_mults, defended_mults, reasons);
+    var defended_score = service.weakness_score(defended_mults);
     var synergy;
         
-//     console.info(target_multipliers);
-//     console.info(target_score);
-//     console.info(defended_multipliers);
+//     console.info(defender_mults);
+//     console.info(defender_score);
+//     console.info(defended_mults);
 //     console.info(defended_score);
 
-    synergy = target_score/defended_score;
+    synergy = defender_score/defended_score;
     return Math.round(synergy * 100);
   };
     
-
+  service.synergy_scores = function(defender, defended){
+    var score = {names: [defender.name], defender_reasons: [], defended_reasons: []};
+    var types = [];
+    
+    for(var i = 0; i<defender.types.length; i++){
+      types.push(defender.types[i].name);
+    }
+    
+    score.defender = service.check_synergy(defender, defended, score.defender_reasons);
+    score.defended = service.check_synergy(defended, defender, score.defended_reasons);
+    score.type = types.join(" ");
+    score.total = Math.round((score.defender + score.defended) / 2);
+    
+    return score;
+  };
+  
+  service.ability_typings = function(pokemon){
+    var result = [pokemon];
+    for(var i = 0; i< pokemon.abilities.length; i++){
+      var ab = pokemon.abilities[i]
+      console.log(ab);
+      if(typeMapping[ab.name]){
+        var poke = {};
+        poke.name = pokemon.name;
+        poke.types = [];
+        for(var j = 0; j<pokemon.types.length; j++){
+          poke.types.push(pokemon.types[j]);          
+        }
+        poke.types.push(ab);
+        result.push(poke);
+      }
+    }
+    
+    return result;
+  };
+  
   return service;
 }]);
