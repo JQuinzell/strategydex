@@ -85,7 +85,6 @@ PokedexControllers.controller('detailsController',
     list = $filter('fullyEvolved')(pokes);
     $scope.synergy_scores = [];
     for(var i = 0; i<list.length; i++){
-      var types = [];
       var score = {names: [list[i].name], defended_reasons: [], defender_reasons: []};
       //How well current pokemon is defended by x
       score.defended = weaknessChecker.check_synergy(list[i], $scope.pokemon, score.defended_reasons);

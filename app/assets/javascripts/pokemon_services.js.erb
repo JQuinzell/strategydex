@@ -120,13 +120,13 @@ app.factory('weaknessChecker', ['typeMapping', function(typeMapping){
     return score;    
   }
 
-  service.defender_score = function(multipliers, defending_multipliers, reasons){
+  service.defender_score = function(multipliers, defended_multipliers, reasons){
     var score = 0;
     if(reasons === undefined){
       reasons = [];
     }
     for(var type in multipliers){
-      var defended_mult = defending_multipliers[type];
+      var defended_mult = defended_multipliers[type];
       if(defended_mult >= 2){
         switch(multipliers[type]){
           case 0:
@@ -185,19 +185,20 @@ app.factory('weaknessChecker', ['typeMapping', function(typeMapping){
     return score;
   }
   
-  service.check_synergy = function(target_pokemon, defended_pokemon, reasons){
-    var target_multipliers = type_multipliers(target_pokemon);
-    var defended_multipliers = type_multipliers(defended_pokemon);
-    var defended_score = service.weakness_score(defended_multipliers);
-    var target_score = service.defender_score(target_multipliers, defended_multipliers, reasons);
+  service.check_synergy = function(defender, defended, reasons){
+    var defender_mults = type_multipliers(defender);
+    var defended_mults = type_multipliers(defended);
+    
+    var defender_score = service.defender_score(defender_mults, defended_mults, reasons);
+    var defended_score = service.weakness_score(defended_mults);
     var synergy;
         
-//     console.info(target_multipliers);
-//     console.info(target_score);
-//     console.info(defended_multipliers);
+//     console.info(defender_mults);
+//     console.info(defender_score);
+//     console.info(defended_mults);
 //     console.info(defended_score);
 
-    synergy = target_score/defended_score;
+    synergy = defender_score/defended_score;
     return Math.round(synergy * 100);
   };
     
