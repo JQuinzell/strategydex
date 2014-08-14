@@ -58,10 +58,8 @@ app.factory('weaknessChecker', ['typeMapping', function(typeMapping){
   
   function type_multipliers(pokemon) {
     var multipliers = {};
-    var types = typify_abilities(pokemon);
-    for(var x = 0; x<pokemon.types.length; x++){
-      types.push(pokemon.types[x].name);
-    }
+    var types = typify(pokemon);
+
     for(var i = 0; i<types.length; i++){
       //current type in provided types
       var current_type = types[i];
@@ -88,13 +86,18 @@ app.factory('weaknessChecker', ['typeMapping', function(typeMapping){
     return multipliers;
   }
   
-  function typify_abilities(pokemon){
+  function typify(pokemon){
     var result = [];
+    //Add relevant abilities to type array
     for(var i = 0; i<pokemon.abilities.length; i++){
       name = pokemon.abilities[i].name
       if(typeMapping[name] !== undefined){
         result.push(name);
       }
+    }
+    //Add types
+    for(var i = 0; i<pokemon.types.length; i++){
+      result.push(pokemon.types[i].name);
     }
     
     return result;
