@@ -84,9 +84,14 @@ PokedexControllers.controller('detailsController',
     var unsorted = [];
     list = $filter('fullyEvolved')(pokes);
     $scope.synergy_scores = [];
-    for(var i = 0; i<list.length; i++){
-      var score = weaknessChecker.synergy_scores(list[i], $scope.pokemon);
-      unsorted.push(score);
+    for(var i = 0; i<list.length; i++){      
+      var variants = weaknessChecker.ability_typings(list[i]);
+      console.log("Variants", variants);
+      for(var z = 0; z<variants.length; z++){
+        console.log("WTF",variants[z]);
+        var score = weaknessChecker.synergy_scores(variants[z], $scope.pokemon);
+        unsorted.push(score);
+      }
     }
 
     $scope.synergy_scores.push(unsorted[0]);
@@ -97,11 +102,8 @@ PokedexControllers.controller('detailsController',
       current.added = false;
       for(var k = 0; k<$scope.synergy_scores.length; k++){
         var item = $scope.synergy_scores[k];
-        console.log("Comparing", current,"to", item);
-        if(lists_equal(current.defended_reasons, item.defended_reasons) &&
-           lists_equal(current.defender_reasons, item.defender_reasons) &&
-           current.defended === item.defended &&
-           current.defends === item.defends) {
+//         console.log("Comparing", current,"to", item);
+        if(current.type === item.type) {
           item.names.push(current.names[0]);
           current.added = true;
           break;

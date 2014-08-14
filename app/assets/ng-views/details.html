@@ -18,8 +18,9 @@
     </tr>
     <tr ng-repeat="score in synergy_scores | orderBy:query.order:query.dir">
       <td>
+        <h6>{{score.type}}</h6>
         <ul>
-        <div ng-repeat="name in score.names">
+        <div ng-repeat="name in score.names track by $index">
           <li>{{name}}</li>
         </div>
         </ul>
