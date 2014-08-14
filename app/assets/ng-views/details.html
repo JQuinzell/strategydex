@@ -10,33 +10,34 @@
   <table style="color:white" ng-show="query.order">
     <tr>
       <th>Name</th>
-      <th ng-click="setOrder('defended')">Defends for {{pokemon.name}}</th>
+      <th ng-click="setOrder('defender')">Defends for {{pokemon.name}}</th>
       <th>Reasons</th>
-      <th ng-click="setOrder('defends')">Defended by {{pokemon.name}}</th>
+      <th ng-click="setOrder('defended')">Defended by {{pokemon.name}}</th>
       <th>Reasons</th>
       <th ng-click="setOrder('total')">Total</th>
     </tr>
     <tr ng-repeat="score in synergy_scores | orderBy:query.order:query.dir">
       <td>
+        <h6>{{score.type}}</h6>
         <ul>
-        <div ng-repeat="name in score.names">
+        <div ng-repeat="name in score.names track by $index">
           <li>{{name}}</li>
         </div>
         </ul>
       </td>
-      <td>{{score.defended}}%</td>
+      <td>{{score.defender}}%</td>
       <td>
         <ul>
-        <div ng-repeat="reason in score.defended_reasons">
+        <div ng-repeat="reason in score.defender_reasons">
           <li>{{reason}}</li>
         </div>
         </ul>
         <hr>
       </td>
-      <td>{{score.defends}}%</td>
+      <td>{{score.defended}}%</td>
       <td>
         <ul>
-        <div ng-repeat="reason in score.defender_reasons">
+        <div ng-repeat="reason in score.defended_reasons">
           <li>{{reason}}</li>
         </div>
         </ul>
