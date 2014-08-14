@@ -73,7 +73,9 @@ app.factory('weaknessChecker', ['typeMapping', function(typeMapping){
       }
       for(var k = 0; k<typeMapping[current_type].resistances.length; k++){
         var resistance = typeMapping[current_type].resistances[k];
-        multipliers[resistance] = multipliers[resistance] || 1;
+        if(multipliers[resistance] === undefined){
+          multipliers[resistance] = 1;
+        }
         multipliers[resistance] /= 2;
       }
       for(var l = 0; l<typeMapping[current_type].immunities.length; l++){
