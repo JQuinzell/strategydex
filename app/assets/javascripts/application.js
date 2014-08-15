@@ -17,5 +17,5 @@
 //= require angular-cache
 //= require angular-rails-templates
 //= require poketools
-//= require_tree ../ng-views
+//= require_tree ../templates
 //= require_tree .

@@ -12,7 +12,7 @@ pokeTools.config(['$routeProvider', function($routeProvider){
 	}).
 	when('/details/:pokemonId', {
     templateUrl: "details.html",
-		controller: 'detailsController'
+		controller: 'DetailsController'
 	}).
 	otherwise({
 		redirectTo: '/pokedex'
