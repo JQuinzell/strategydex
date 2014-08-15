@@ -60,7 +60,7 @@ pokeCalc.
 				ngModel.$parsers.push(function (inputValue) {
 					console.log(inputValue);
 					var digits = inputValue.substring(0, 2);
-					var digits = digits.split('').filter(function (s) { return (!isNaN(s) && s != ' '); }).join('');
+					digits = digits.split('').filter(function (s) { return (!isNaN(s) && s != ' '); }).join('');
 					if(digits>31) { digits = 31; }
 					console.log(digits);
 					ngModel.$viewValue = digits;
