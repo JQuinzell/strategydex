@@ -37,7 +37,7 @@ PokedexControllers.controller('PokedexController', ['$scope', 'pokedex', '$filte
   
 }]);
 
-PokedexControllers.controller('detailsController',
+PokedexControllers.controller('DetailsController',
 ['$scope', '$routeParams', '$filter', 'pokedex', 'weaknessChecker', function($scope, $routeParams, $filter, pokedex, weaknessChecker) {
 
   var pokes;
