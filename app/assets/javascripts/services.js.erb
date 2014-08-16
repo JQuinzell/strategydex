@@ -243,3 +243,52 @@ app.factory('weaknessChecker', ['typeMapping', function(typeMapping){
   
   return service;
 }]);
+
+app.factory('statService', [function(){
+  var nature_map = {};
+  nature_map.hardy = {};
+  nature_map.lonely = {attack: 1.1, defense: .9};
+  nature_map.brave = {attack: 1.1, defense: .9};
+  nature_map.adamant = {attack: 1.1, speed: .9};
+  nature_map.naughty = {attack: 1.1, sp_atk: .9};
+  nature_map.bold = {defense: 1.1, attack: .9};
+  nature_map.docile = {};
+  nature_map.relaxed = {defense: 1.1, speed: .9};
+  nature_map.impish = {defense: 1.1, sp_atk: .9};
+  nature_map.lax = {defense: 1.1, sp_def: .9};
+  nature_map.timid = {speed: 1.1, attack: .9};
+  nature_map.hasty = {speed: 1.1, defense: .9};
+  nature_map.serious = {};
+  nature_map.jolly = {speed: 1.1, sp_atk: .9};
+  nature_map.naive = {speed: 1.1, sp_def: .9};
+  nature_map.modest = {sp_atk: 1.1, attack: .9};
+  nature_map.mild = {sp_atk: 1.1, defense: .9};
+  nature_map.quiet = {sp_atk: 1.1, speed: .9};
+  nature_map.bashful = {};
+  nature_map.rash = {sp_attack: 1.1, sp_defense: .9};
+  nature_map.calm = {sp_def: 1.1, attack: .9};
+  nature_map.gentle = {sp_def: 1.1, defense: .9};
+  nature_map.sassy = {sp_def: 1.1, speed: .9};
+  nature_map.careful = {sp_def: 1.1, sp_atk: .9};
+  nature_map.quirky = {};
+  var service = {};
+
+  service.calc_attack = function(base, nature, iv, ev, level){
+    if(iv === undefined) iv = 31;
+    if(ev === undefined) ev = 252;
+    if(nature === undefined) nature = "quirky";
+    if(level === undefined) level = 100;
+
+    var nat_mod = nature_map[nature].attack || 1;
+
+    return Math.floor(((iv + 2 * base + (Math.round(ev/4))) * level/100 + 5) * nat_mod);
+  };
+
+  return service;
+}]);
+
+app.factory('damageService', [function(){
+  return function(){
+    
+  };
+}])
