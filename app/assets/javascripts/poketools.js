@@ -7,8 +7,7 @@ var pokeTools = angular.module('pokeTools', [
 pokeTools.config(['$routeProvider', function($routeProvider){
 	$routeProvider.
 	when('/pokedex', {
-		templateUrl: "pokedex.html",
-		controller: 'PokedexController'
+		templateUrl: "pokedex.html"
 	}).
 	when('/details/:pokemonId', {
     templateUrl: "details.html",
