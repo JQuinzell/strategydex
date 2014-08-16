@@ -273,6 +273,7 @@ app.factory('statService', [function(){
   nature_map.quirky = {};
   var service = {};
 
+  //Could be used for any stat bar HP if stat name provided
   service.calc_attack = function(base, nature, iv, ev, level){
     if(iv === undefined) iv = 31;
     if(ev === undefined) ev = 252;
@@ -287,8 +288,14 @@ app.factory('statService', [function(){
   return service;
 }]);
 
-app.factory('damageService', [function(){
-  return function(){
-    
+app.factory('damageService', ['statService', function(stats){
+  var service = {};
+
+  //doesn't consider any modifiers: STAB, type match up,  crit, item, rand
+  service.raw_damage = function(attack, defense, power, level) {
+    if(level === undefined) level = 100;
+
+    return Math.floor(((2*level+10)/250)*(attack/defense)*(power+2));
   };
+  return service;
 }])
