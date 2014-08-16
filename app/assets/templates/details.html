@@ -7,7 +7,7 @@
 	<a href="#/">Back</a>
 	<a href="#/details/{{prevPoke}}">Prev</a>
 	<a href="#/details/{{nextPoke}}">Next</a>
-  <table style="color:white" ng-show="query.order">
+  <table style="color:white" ng-show="syn_query.order">
     <tr>
       <th>Name</th>
       <th ng-click="setOrder('defender')">Defends for {{pokemon.name}}</th>
@@ -16,7 +16,7 @@
       <th>Reasons</th>
       <th ng-click="setOrder('total')">Total</th>
     </tr>
-    <tr ng-repeat="score in synergy_scores | orderBy:query.order:query.dir">
+    <tr ng-repeat="score in synergy_scores | orderBy:syn_query.order:syn_query.dir">
       <td>
         <h6>{{score.type}}</h6>
         <ul>
