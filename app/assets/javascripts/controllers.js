@@ -70,16 +70,16 @@ PokedexControllers.controller('DetailsController',
   });
   
   $scope.setOrder = function(q){
-    if($scope.query.order === q){
-      $scope.query.dir = !$scope.query.dir;
+    if($scope.syn_query.order === q){
+      $scope.syn_query.dir = !$scope.syn_query.dir;
     } else {
-      $scope.query.order = q;
-      $scope.query.dir = 'reverse';
+      $scope.syn_query.order = q;
+      $scope.syn_query.dir = 'reverse';
     }
   };
   
   $scope.synergize = function(){
-    $scope.query = {order: 'total', dir: 'reverse'}
+    $scope.syn_query = {order: 'total', dir: 'reverse'}
     var list;
     var unsorted = [];
     list = $filter('fullyEvolved')(pokes);
@@ -115,7 +115,6 @@ PokedexControllers.controller('DetailsController',
       }
     }
   };
-  
   
 }]);
 
