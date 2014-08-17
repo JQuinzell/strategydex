@@ -66,7 +66,7 @@ PokedexControllers.controller('DetailsController',
 
 	pokedex.find($routeParams.pokemonId).then(function(data){
     console.log(data);
-    $scope.pokemon = data;
+    $scope.pokemon = [data];
   });
   
   $scope.setOrder = function(q){
