@@ -1,7 +1,7 @@
 <section>
-	<a href="#/">Back</a>
-	<a href="#/details/{{prevPoke}}">Prev</a>
-	<a href="#/details/{{nextPoke}}">Next</a>
+	<a ng-href="#/">Back</a>
+	<a ng-href="#/details/{{prevPoke}}">Prev</a>
+	<a ng-href="#/details/{{nextPoke}}">Next</a>
   <div class="pokemon-box" ng-repeat="poke in pokemon">
     <h1>#{{poke.national_id}} {{poke.name}}</h1>
     <button ng-click="synergize()">Check Synergy</button>
