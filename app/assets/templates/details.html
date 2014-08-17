@@ -3,9 +3,11 @@
 	<a ng-href="#/details/{{prevPoke}}">Prev</a>
 	<a ng-href="#/details/{{nextPoke}}">Next</a>
   <input id="search" type="text" ng-model="query.find">
-  <a ng-repeat="mon in pokedex | filter:{name:query.find} | limitTo:10" ng-show="query.find" style="margin: 10px;">{{mon.name}}</a>
+  <div ng-repeat="mon in pokedex | filter:{name:query.find} | limitTo:10" ng-show="query.find">
+    <a style="margin: 10px; background:blue; cursor: pointer;" ng-click="addPoke(mon)">{{mon.name}}</a>
+  </div>
   <div class="pokemon-box" ng-repeat="poke in pokemon">
-    <h1>#{{poke.national_id}} {{poke.name}}</h1>
+    <h1>#{{poke.national_id}} {{poke.name}} <span style="color: red; font-size:16px;"ng-click="removePoke(poke)" ng-if="$index !== 0">X</span></h1>
     <button ng-click="synergize()">Check Synergy</button>
     <ul>
       <li  ng-repeat="type in poke.types">{{type.name}}</li>
