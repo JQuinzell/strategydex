@@ -2,6 +2,8 @@
 	<a ng-href="#/">Back</a>
 	<a ng-href="#/details/{{prevPoke}}">Prev</a>
 	<a ng-href="#/details/{{nextPoke}}">Next</a>
+  <input id="search" type="text" ng-model="query.find">
+  <a ng-repeat="mon in pokedex | filter:{name:query.find} | limitTo:10" ng-show="query.find" style="margin: 10px;">{{mon.name}}</a>
   <div class="pokemon-box" ng-repeat="poke in pokemon">
     <h1>#{{poke.national_id}} {{poke.name}}</h1>
     <button ng-click="synergize()">Check Synergy</button>
