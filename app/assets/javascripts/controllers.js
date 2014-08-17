@@ -66,7 +66,7 @@ PokedexControllers.controller('DetailsController',
 
 	pokedex.find($routeParams.pokemonId).then(function(data){
     console.log(data);
-    $scope.pokemon = [data];
+    $scope.pokemon = data;
   });
   
   $scope.setOrder = function(q){
@@ -79,27 +79,17 @@ PokedexControllers.controller('DetailsController',
   };
   
   $scope.addPoke = function(poke){
-    var unique = true;
-    for(var i = 0; i<$scope.pokemon.length; i++){
-      if(poke.name === $scope.pokemon[i].name){
-        unique = false;
-        break;
-      }
-    }
-    
-    if(unique) {
-      $scope.pokemon.push(poke);
-      $scope.query.find = null;
-    }
+    $scope.comparison = poke;
+    $scope.query.find = null;
   };
   
-  $scope.removePoke = function(poke){
-    for(var i = 0; i<$scope.pokemon.length; i++){
-      if(poke.name === $scope.pokemon[i].name){
-        $scope.pokemon.splice(i, 1);
-        break;
-      }
-    }
+  $scope.removePoke = function(){
+    $scope.comparison = null;
+  };
+  
+  $scope.compare_synergy = function(){
+    var scores = [];
+    $scope.comparison_scores = [];
   };
   
   $scope.synergize = function(){
