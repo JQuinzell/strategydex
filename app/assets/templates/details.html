@@ -1,12 +1,23 @@
 <section>
-	<h1>{{pokemon.national_id}} - {{pokemon.name}}</h1>
-  <button ng-click="synergize()">Check Synergy</button>
-	<ul>
-		<li  ng-repeat="type in pokemon.types">{{type.name}}</li>
-	</ul>
 	<a href="#/">Back</a>
 	<a href="#/details/{{prevPoke}}">Prev</a>
 	<a href="#/details/{{nextPoke}}">Next</a>
+  <div class="pokemon-box" ng-repeat="poke in pokemon">
+    <h1>#{{poke.national_id}} {{poke.name}}</h1>
+    <button ng-click="synergize()">Check Synergy</button>
+    <ul>
+      <li  ng-repeat="type in poke.types">{{type.name}}</li>
+    </ul>
+    Stats:
+    <ul>
+      <li>HP: {{poke.hp}}</li>
+      <li>Attack: {{poke.attack}}</li>
+      <li>Defense: {{poke.defense}}</li>
+      <li>Speed: {{poke.speed}}</li>
+      <li>Sp. Attack: {{poke.sp_atk}}</li>
+      <li>Sp. Defense: {{poke.sp_def}}</li>
+    </ul>
+  </div>
   <table style="color:white" ng-show="syn_query.order">
     <tr>
       <th>Name</th>
