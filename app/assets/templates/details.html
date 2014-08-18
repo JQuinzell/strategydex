@@ -13,6 +13,7 @@
     <ul>
       <li  ng-repeat="type in pokemon.types">{{type.name}}</li>
     </ul>
+    Nature: <select ng-options="nat as nat for nat in natures" ng-model="pokemon.nature" ng-change="recalc_stats(pokemon)"></select>
     Stats:
     <ul class="stat-list">
       <li ng-repeat="stat in stats">
@@ -40,6 +41,7 @@
     <ul>
       <li  ng-repeat="type in comparison.types">{{type.name}}</li>
     </ul>
+    Nature: <select ng-options="nat as nat for nat in natures" ng-model="comparison.nature" ng-change="recalc_stats(comparison)"></select>
     Stats:
     <ul class="stat-list">
       <li ng-repeat="stat in stats">
