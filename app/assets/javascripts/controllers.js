@@ -63,6 +63,7 @@ PokedexControllers.controller('DetailsController',
   var stats = [{title: "HP", name: "hp"}, {title: "Attack", name: "attack"}, {title: "Defense",name: "defense"}, {title: "Sp. Attack", name: "sp_atk"},{title:"Sp. Defense", name: "sp_def"},{title: "speed",name: "speed"}];
   $scope.stats = stats;
    
+   $scope.natures = ["hardy", "lonely", "brave", "adamant", "naughty", "bold", "docile", "relaxed", "impish", "lax", "timid", "hasty", "serious", "jolly", "naive", "modest", "mild", "quiet", "bashful", "rash", "calm", "gentle", "sassy", "careful", "quirky"];
   function set_stats(poke){
     poke.stats = {};
     for(var i = 0; i<stats.length; i++){     
@@ -80,8 +81,15 @@ PokedexControllers.controller('DetailsController',
     set_stats($scope.pokemon);    
   });
    
+  $scope.recalc_stats = function(poke){
+    for(var i = 0; i<stats.length; i++){
+      var stat = stats[i].name;
+      var base = poke[stat];
+      poke.stats[stat].value = statService.calc_stat(stat, base, poke.stats[stat].iv_val, poke.stats[stat].ev_val, poke.nature);
+     }
+   }
   $scope.poke_stat = function(stat, poke){
-    poke.stats[stat].value = statService.calc_stat(stat, poke[stat], poke.stats[stat].iv_val, poke.stats[stat].ev_val);
+    poke.stats[stat].value = statService.calc_stat(stat, poke[stat], poke.stats[stat].iv_val, poke.stats[stat].ev_val, poke.nature);
   };
   
   $scope.setOrder = function(q){

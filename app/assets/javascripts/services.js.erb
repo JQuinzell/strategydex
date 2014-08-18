@@ -279,7 +279,7 @@ app.factory('statService', [function(){
     if(ev === undefined) ev = 0;
     if(nature === undefined) nature = "quirky";
     if(level === undefined) level = 100;
-
+//     console.log("Function:",stat, base, iv, ev, nature, level);
     var nat_mod = nature_map[nature][stat] || 1;
     if(stat==='hp') {
       return Math.floor(((iv + 2 * base + (Math.round(ev/4))) * level/100) + 10 + level);
