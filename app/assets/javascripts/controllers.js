@@ -38,12 +38,8 @@ PokedexControllers.controller('PokedexController', ['$scope', 'pokedex', '$filte
 }]);
 
 PokedexControllers.controller('DetailsController',
-['$scope', '$routeParams', '$filter', 'pokedex', 'weaknessChecker', function($scope, $routeParams, $filter, pokedex, weaknessChecker) {
-
-  var pokes;
-  pokedex.all().success(function(data){
-    pokes = data;
-	});
+['$scope', '$routeParams', '$filter', 'pokedex', 'weaknessChecker', 'statService', 'damageService',
+ function($scope, $routeParams, $filter, pokedex, weaknessChecker, statService, damageService) {
 
 	function set_directions(){
 		var last = 718;
@@ -64,10 +60,29 @@ PokedexControllers.controller('DetailsController',
 
 	set_directions();
 
+  var stats = [{title: "HP", name: "hp"}, {title: "Attack", name: "attack"}, {title: "Defense",name: "defense"}, {title: "Sp. Attack", name: "sp_atk"},{title:"Sp. Defense", name: "sp_def"},{title: "speed",name: "speed"}];
+  $scope.stats = stats;
+   
+  function set_stats(poke){
+    poke.stats = {};
+    for(var i = 0; i<stats.length; i++){     
+      var stat = stats[i].name
+      var base = poke[stat];
+      poke.stats[stat] = {};
+      poke.stats[stat].ev_val = 0;
+      poke.stats[stat].iv_val = 31;
+      poke.stats[stat].value = statService.calc_stat(stat, base);
+    }
+  }
 	pokedex.find($routeParams.pokemonId).then(function(data){
     console.log(data);
     $scope.pokemon = data;
+    set_stats($scope.pokemon);    
   });
+   
+  $scope.poke_stat = function(stat, poke){
+    poke.stats[stat].value = statService.calc_stat(stat, poke[stat], poke.stats[stat].iv_val, poke.stats[stat].ev_val);
+  };
   
   $scope.setOrder = function(q){
     if($scope.syn_query.order === q){
@@ -79,17 +94,13 @@ PokedexControllers.controller('DetailsController',
   };
   
   $scope.addPoke = function(poke){
+    set_stats(poke);
     $scope.comparison = poke;
     $scope.query.find = null;
   };
   
   $scope.removePoke = function(){
     $scope.comparison = null;
-  };
-  
-  $scope.compare_synergy = function(){
-    var scores = [];
-    $scope.comparison_scores = [];
   };
   
   $scope.synergize = function(){

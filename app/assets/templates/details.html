@@ -14,13 +14,23 @@
       <li  ng-repeat="type in pokemon.types">{{type.name}}</li>
     </ul>
     Stats:
-    <ul>
-      <li>HP: {{pokemon.hp}}</li>
-      <li>Attack: {{pokemon.attack}}</li>
-      <li>Defense: {{pokemon.defense}}</li>
-      <li>Speed: {{pokemon.speed}}</li>
-      <li>Sp. Attack: {{pokemon.sp_atk}}</li>
-      <li>Sp. Defense: {{pokemon.sp_def}}</li>
+    <ul class="stat-list">
+      <li ng-repeat="stat in stats">
+        {{stat.title}}: {{pokemon[stat.name]}} 
+        EVs: <input only-digits 
+                    max-digits="3" 
+                    max-value="252" 
+                    ng-change="poke_stat(stat.name, pokemon)"
+                    type="text" size="2" 
+                    ng-model="pokemon.stats[stat.name].ev_val"> 
+        IVs: <input only-digits 
+                    max-digits="2" 
+                    max-value="31"
+                    ng-change="poke_stat(stat.name, pokemon)" 
+                    type="text" 
+                    size="2" 
+                    ng-model="pokemon.stats[stat.name].iv_val"> = {{pokemon.stats[stat.name].value}}
+      </li>
     </ul>
   </div>
   <div class="pokemon-controls" ng-show="comparison">
@@ -31,13 +41,23 @@
       <li  ng-repeat="type in comparison.types">{{type.name}}</li>
     </ul>
     Stats:
-    <ul>
-      <li>HP: {{comparison.hp}}</li>
-      <li>Attack: {{comparison.attack}}</li>
-      <li>Defense: {{comparison.defense}}</li>
-      <li>Speed: {{comparison.speed}}</li>
-      <li>Sp. Attack: {{comparison.sp_atk}}</li>
-      <li>Sp. Defense: {{comparison.sp_def}}</li>
+    <ul class="stat-list">
+      <li ng-repeat="stat in stats">
+        {{stat.title}}: {{comparison[stat.name]}} 
+        EVs: <input only-digits 
+                    max-digits="3" 
+                    max-value="252" 
+                    ng-change="poke_stat(stat.name, comparison)"
+                    type="text" size="2" 
+                    ng-model="comparison.stats[stat.name].ev_val"> 
+        IVs: <input only-digits 
+                    max-digits="2" 
+                    max-value="31"
+                    ng-change="poke_stat(stat.name, comparison)" 
+                    type="text" 
+                    size="2" 
+                    ng-model="comparison.stats[stat.name].iv_val"> = {{comparison.stats[stat.name].value}}
+      </li>
     </ul>
   </div>
   <table style="color:white; clear: both;" ng-show="syn_query.order">
