@@ -49,24 +49,3 @@ pokeCalc.controller('hpController', ['$scope', function($scope){
   
   $scope.calcType();
 }]);
-
-pokeCalc.
-	directive('onlyDigits', function () {
-
-		return {
-			restrict: 'A',
-			require: 'ngModel',
-			link: function (scope, element, attrs, ngModel) {
-				ngModel.$parsers.push(function (inputValue) {
-					console.log(inputValue);
-					var digits = inputValue.substring(0, 2);
-					digits = digits.split('').filter(function (s) { return (!isNaN(s) && s != ' '); }).join('');
-					if(digits>31) { digits = 31; }
-					console.log(digits);
-					ngModel.$viewValue = digits;
-					ngModel.$render();
-					return digits;
-				});
-			}
-		};
-	});

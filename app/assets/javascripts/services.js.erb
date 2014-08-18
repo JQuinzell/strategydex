@@ -274,15 +274,18 @@ app.factory('statService', [function(){
   var service = {};
 
   //Could be used for any stat bar HP if stat name provided
-  service.calc_attack = function(base, nature, iv, ev, level){
+  service.calc_stat = function(stat, base, iv, ev, nature, level){
     if(iv === undefined) iv = 31;
-    if(ev === undefined) ev = 252;
+    if(ev === undefined) ev = 0;
     if(nature === undefined) nature = "quirky";
     if(level === undefined) level = 100;
 
-    var nat_mod = nature_map[nature].attack || 1;
-
-    return Math.floor(((iv + 2 * base + (Math.round(ev/4))) * level/100 + 5) * nat_mod);
+    var nat_mod = nature_map[nature][stat] || 1;
+    if(stat==='hp') {
+      return Math.floor(((iv + 2 * base + (Math.round(ev/4))) * level/100) + 10 + level);
+    } else {
+      return Math.floor(((iv + 2 * base + (Math.round(ev/4))) * level/100 + 5) * nat_mod);
+    }
   };
 
   return service;
