@@ -35,6 +35,15 @@
     </ul>
   </div>
   <div class="pokemon-controls" ng-show="comparison">
+    <h4>Damage Calc</h4> 
+    Power: <input type="text"
+           only-digits
+           max-digits="3"
+           size="2">
+    Type: <select ng-options="type as type for type in type_list" ng-model="move.type"></select> 
+    <label for="special">Special: </label><input type="radio" id="special" name="att_type" value="special"> 
+    <label for="physical">Physical: </label><input type="radio" id="physical" name="att_type" value="physical">
+    Result:
   </div>
   <div class="pokemon-box" ng-show="comparison">
     <h1>#{{comparison.national_id}} {{comparison.name}} <span ng-click="removePoke()" style="font-size: 20px; cursor: pointer;">x</span></h1>
