@@ -63,7 +63,7 @@ PokedexControllers.controller('DetailsController',
   var stats = [{title: "HP", name: "hp"}, {title: "Attack", name: "attack"}, {title: "Defense",name: "defense"}, {title: "Sp. Attack", name: "sp_atk"},{title:"Sp. Defense", name: "sp_def"},{title: "speed",name: "speed"}];
   $scope.stats = stats;
    
-   $scope.natures = ["hardy", "lonely", "brave", "adamant", "naughty", "bold", "docile", "relaxed", "impish", "lax", "timid", "hasty", "serious", "jolly", "naive", "modest", "mild", "quiet", "bashful", "rash", "calm", "gentle", "sassy", "careful", "quirky"];
+  $scope.natures = ["hardy", "lonely", "brave", "adamant", "naughty", "bold", "docile", "relaxed", "impish", "lax", "timid", "hasty", "serious", "jolly", "naive", "modest", "mild", "quiet", "bashful", "rash", "calm", "gentle", "sassy", "careful", "quirky"];
   function set_stats(poke){
     poke.stats = {};
     for(var i = 0; i<stats.length; i++){     
@@ -75,6 +75,25 @@ PokedexControllers.controller('DetailsController',
       poke.stats[stat].value = statService.calc_stat(stat, base);
     }
   }
+  
+  $scope.calc_damage = function(move, user, target){
+    var attack = move.category === "special" ? user.stats.sp_atk.value : user.stats.attack.value;
+    var defense = move.category === "special" ? target.stats.sp_def.value : target.stats.defense.value;
+    
+    var raw = damageService.raw_damage(attack, defense, move.power);
+    console.log(raw);
+    var stab = 1;
+    for(var i = 0; i<user.types.length; i++){
+      if(user.types[i].name === move.type)
+        stab = 1.5;
+    }
+    var type_mult = weaknessChecker.type_multipliers(target)[move.type] || 1;
+    console.log(stab, type_mult);
+    move.min_dmg = Math.round(raw*stab*type_mult*0.85);
+    move.max_dmg = Math.round(raw*stab*type_mult);
+    move.calced = true;
+  };
+   
 	pokedex.find($routeParams.pokemonId).then(function(data){
     console.log(data);
     $scope.pokemon = data;
