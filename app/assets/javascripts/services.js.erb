@@ -297,8 +297,12 @@ app.factory('damageService', ['statService', function(stats){
   //doesn't consider any modifiers: STAB, type match up,  crit, item, rand
   service.raw_damage = function(attack, defense, power, level) {
     if(level === undefined) level = 100;
-
-    return Math.floor(((2*level+10)/250)*(attack/defense)*(power+2));
+    console.log("raw_damage vars:", attack, defense, power, level);
+    var attack_var = Math.floor(2*level/5+2) * power * attack;
+    var defense_var = Math.floor(attack_var/defense);
+    var result = Math.floor(defense_var/50)+2;
+    console.log("Raw dmg:", result);
+    return result;
   };
   return service;
 }])

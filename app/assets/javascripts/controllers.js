@@ -87,10 +87,11 @@ PokedexControllers.controller('DetailsController',
       if(user.types[i].name === move.type)
         stab = 1.5;
     }
-    var type_mult = weaknessChecker.type_multipliers(target)[move.type] || 1;
-    console.log(stab, type_mult);
-    move.min_dmg = Math.round(raw*stab*type_mult*0.85);
-    move.max_dmg = Math.round(raw*stab*type_mult);
+    var type_mult = weaknessChecker.type_multipliers(target)[move.type];
+    type_mult = type_mult === undefined ? 1 : type_mult;
+    console.log(raw, stab, type_mult);
+    move.min_dmg = Math.floor(Math.floor(Math.floor(raw*0.85)*stab)*type_mult);
+    move.max_dmg = Math.floor(Math.floor(raw*stab)*type_mult);
     move.calced = true;
   };
    
