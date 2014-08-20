@@ -40,7 +40,12 @@ PokedexControllers.controller('PokedexController', ['$scope', 'pokedex', '$filte
 PokedexControllers.controller('DetailsController',
 ['$scope', '$routeParams', '$filter', 'pokedex', 'weaknessChecker', 'statService', 'damageService',
  function($scope, $routeParams, $filter, pokedex, weaknessChecker, statService, damageService) {
-  
+  var pokes;
+  pokedex.all().success(function(data){
+    pokes = data;
+	});
+   
+  console.log(pokes);
 	function set_directions(){
 		var last = 718;
 		$scope.pokeIndex = Number($routeParams.pokemonId);
