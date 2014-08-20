@@ -2,10 +2,10 @@
 	<header><h1>Pokedex</h1></header>
 
 	<form action="#">
-		<input id="search" type="text" ng-model="query.search">
+		<input id="search" type="text" ng-model="dex_q.search">
 
-		<label >
-			<select ng-model="query.order">
+		<label>
+			<select ng-model="dex_q.order">
 				<option value="name">Name</option>
 				<option value="national_id">Id</option>
         <option value="hp">HP</option>
@@ -18,11 +18,11 @@
 		</label>
 
 		<label>
-			<input type="radio" ng-model="query.dir" name="direction" checked>
+			<input type="radio" ng-model="dex_q.dir" name="direction" checked>
 			ascending
 		</label>
 		<label>
-			<input type="radio" ng-model="query.dir" name="direction" value="reverse">
+			<input type="radio" ng-model="dex_q.dir" name="direction" value="reverse">
 			descending
 		</label>
     <label>
@@ -33,7 +33,7 @@
     </label><br>    
 	</form>
 
-	<div ng-repeat="pokemon in pokedex | filter:{name:query.search} | orderBy:query.order:query.dir">
+	<div ng-repeat="pokemon in pokedex | filter:{name:dex_q.search} | orderBy:dex_q.order:dex_q.dir">
     <pokemon pkmn="pokemon"></pokemon>
 	</div>
 </div>
