@@ -3,13 +3,13 @@ var PokedexControllers = angular.module('PokedexControllers', ['PokemonDirective
 PokedexControllers.controller('PokedexController', ['$scope', 'pokedex', '$filter', function($scope, pokedex, $filter) {
   var pokedata;
   $scope.type_list = ["normal", "fighting", "flying", "poison", "ground", "rock", "bug", "ghost", "steel", "fire", "water", "grass", "electric", "psychic", "ice", "dragon", "dark", "fairy"];
- $scope.query = {
+ $scope.dex_q = {
     types: [],
     order: 'national_id',
     nfe: false
   };
   for(var i = 0; i<$scope.type_list.length; i++){
-    $scope.query.types.push($scope.type_list[i]);
+    $scope.dex_q.types.push($scope.type_list[i]);
   }
 	pokedex.all().success(function(data){
     pokedata = data;
@@ -17,22 +17,22 @@ PokedexControllers.controller('PokedexController', ['$scope', 'pokedex', '$filte
 	});
 
   $scope.toggleType =function(type){
-    var index = $scope.query.types.indexOf(type);
+    var index = $scope.dex_q.types.indexOf(type);
     if( index === -1){
-      $scope.query.types.push(type);
+      $scope.dex_q.types.push(type);
     } else {
-      $scope.query.types.splice(index, 1);
+      $scope.dex_q.types.splice(index, 1);
     }
-    $scope.pokedex = $filter('onlyTypes')(pokedata, $scope.query.types);
+    $scope.pokedex = $filter('onlyTypes')(pokedata, $scope.dex_q.types);
   };
   
   $scope.toggleNfe = function(){
-    if(!$scope.query.nfe){
+    if(!$scope.dex_q.nfe){
       $scope.pokedex = pokedata
     } else {
       $scope.pokedex = $filter('fullyEvolved')(pokedata);
     }
-    $scope.query.nfe = !$scope.query.nfe;
+    $scope.dex_q.nfe = !$scope.dex_q.nfe;
   };
   
 }]);
