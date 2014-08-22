@@ -50,23 +50,26 @@ PokedexControllers.controller('DetailsController',
   $scope.stats = stats;   
   $scope.prevPoke = pokeId > 1 ? pokeId-1 : last;
   $scope.nextPoke = pokeId < last ? pokeId+1 : 1;
+  $scope.natures = ["hardy", "lonely", "brave", "adamant", "naughty", "bold", "docile", "relaxed", "impish", "lax", "timid", "hasty", "serious", "jolly", "naive", "modest", "mild", "quiet", "bashful", "rash", "calm", "gentle", "sassy", "careful", "quirky"];
   
   pokedex.all().success(function(data){
     pokes = data;
 	});
    
-  $scope.natures = ["hardy", "lonely", "brave", "adamant", "naughty", "bold", "docile", "relaxed", "impish", "lax", "timid", "hasty", "serious", "jolly", "naive", "modest", "mild", "quiet", "bashful", "rash", "calm", "gentle", "sassy", "careful", "quirky"];
-  function set_stats(poke){
-    poke.stats = {};
-    for(var i = 0; i<stats.length; i++){     
-      var stat = stats[i].name
-      var base = poke[stat];
-      poke.stats[stat] = {};
-      poke.stats[stat].ev_val = 0;
-      poke.stats[stat].iv_val = 31;
-      poke.stats[stat].value = statService.calc_stat(stat, base);
-    }
-  }
+	pokedex.find($routeParams.pokemonId).then(function(data){
+    $scope.pokemon = data;
+    set_stats($scope.pokemon);    
+  });
+   
+  $scope.addPoke = function(poke){
+    set_stats(poke);
+    $scope.comparison = poke;
+    $scope.query.find = null;
+  };
+  
+  $scope.removePoke = function(){
+    $scope.comparison = null;
+  };
   
   $scope.calc_damage = function(move, user, target){
     var attack = move.category === "special" ? user.stats.sp_atk.value : user.stats.attack.value;
@@ -86,13 +89,7 @@ PokedexControllers.controller('DetailsController',
     move.max_dmg = Math.floor(Math.floor(raw*stab)*type_mult);
     move.calced = true;
   };
-   
-	pokedex.find($routeParams.pokemonId).then(function(data){
-    console.log(data);
-    $scope.pokemon = data;
-    set_stats($scope.pokemon);    
-  });
-   
+      
   $scope.recalc_stats = function(poke){
     for(var i = 0; i<stats.length; i++){
       var stat = stats[i].name;
@@ -100,6 +97,7 @@ PokedexControllers.controller('DetailsController',
       poke.stats[stat].value = statService.calc_stat(stat, base, poke.stats[stat].iv_val, poke.stats[stat].ev_val, poke.nature);
      }
    }
+  
   $scope.poke_stat = function(stat, poke){
     poke.stats[stat].value = statService.calc_stat(stat, poke[stat], poke.stats[stat].iv_val, poke.stats[stat].ev_val, poke.nature);
   };
@@ -112,17 +110,7 @@ PokedexControllers.controller('DetailsController',
       $scope.syn_query.dir = 'reverse';
     }
   };
-  
-  $scope.addPoke = function(poke){
-    set_stats(poke);
-    $scope.comparison = poke;
-    $scope.query.find = null;
-  };
-  
-  $scope.removePoke = function(){
-    $scope.comparison = null;
-  };
-  
+    
   $scope.synergize = function(){
     $scope.syn_query = {order: 'total', dir: 'reverse'}
     var list;
@@ -161,6 +149,17 @@ PokedexControllers.controller('DetailsController',
     }
   };
   
+  function set_stats(poke){
+    poke.stats = {};
+    for(var i = 0; i<stats.length; i++){     
+      var stat = stats[i].name
+      var base = poke[stat];
+      poke.stats[stat] = {};
+      poke.stats[stat].ev_val = 0;
+      poke.stats[stat].iv_val = 31;
+      poke.stats[stat].value = statService.calc_stat(stat, base);
+    }
+  }
 }]);
 
 PokedexControllers.filter('fullyEvolved', function(){
