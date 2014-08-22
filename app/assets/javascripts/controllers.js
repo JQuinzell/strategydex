@@ -44,31 +44,16 @@ PokedexControllers.controller('DetailsController',
 ['$scope', '$routeParams', '$filter', 'pokedex', 'weaknessChecker', 'statService', 'damageService',
  function($scope, $routeParams, $filter, pokedex, weaknessChecker, statService, damageService) {
   var pokes;
+  var pokeId = Number($routeParams.pokemonId);
+  var last = 718;
+  var stats = $scope.stat_map;
+  $scope.stats = stats;   
+  $scope.prevPoke = pokeId > 1 ? pokeId-1 : last;
+  $scope.nextPoke = pokeId < last ? pokeId+1 : 1;
+  
   pokedex.all().success(function(data){
     pokes = data;
 	});
-   
-	function set_directions(){
-		var last = 718;
-		$scope.pokeIndex = Number($routeParams.pokemonId);
-
-		if($scope.pokeIndex > 1) {
-			$scope.prevPoke = $scope.pokeIndex-1;
-		} else {
-			$scope.prevPoke = last;
-		}
-
-		if($scope.pokeIndex < last) {
-			$scope.nextPoke = $scope.pokeIndex + 1;
-		} else {
-			$scope.nextPoke = 1;
-		}		
-	}
-
-	set_directions();
-
-  var stats = $scope.stat_map;
-  $scope.stats = stats;
    
   $scope.natures = ["hardy", "lonely", "brave", "adamant", "naughty", "bold", "docile", "relaxed", "impish", "lax", "timid", "hasty", "serious", "jolly", "naive", "modest", "mild", "quiet", "bashful", "rash", "calm", "gentle", "sassy", "careful", "quirky"];
   function set_stats(poke){
