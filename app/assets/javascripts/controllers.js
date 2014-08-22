@@ -190,17 +190,3 @@ PokedexControllers.filter('onlyTypes',function(){
     return list;
   };
 });
-
-function lists_equal(list, comparison){
-//   console.log("Testing equal lists:", list, "and", comparison);
-  if(list.length === comparison.length){
-    list.sort(); comparison.sort();
-    for(var i = 0; i<list.length; i++){
-      if(list[i] !== comparison[i]){
-        return false;
-      }
-    }
-    return true;
-  }
-  return false;
-}
