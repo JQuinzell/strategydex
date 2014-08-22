@@ -3,8 +3,10 @@ var PokedexControllers = angular.module('PokedexControllers', ['PokemonDirective
 PokedexControllers.controller('PokedexController', ['$scope', 'pokedex', '$filter', function($scope, pokedex, $filter) {
   var pokedata;
   var type_list = ["normal", "fighting", "flying", "poison", "ground", "rock", "bug", "ghost", "steel", "fire", "water", "grass", "electric", "psychic", "ice", "dragon", "dark", "fairy"];
+  
+  $scope.stat_map = [{title: "HP", name: "hp"}, {title: "Attack", name: "attack"}, {title: "Defense",name: "defense"}, {title: "Sp. Attack", name: "sp_atk"},{title:"Sp. Defense", name: "sp_def"},{title: "speed",name: "speed"}];
   $scope.type_list = type_list;
- $scope.dex_q = {
+  $scope.dex_q = {
     types: [],
     order: 'national_id',
     nfe: false
@@ -46,7 +48,6 @@ PokedexControllers.controller('DetailsController',
     pokes = data;
 	});
    
-  console.log(pokes);
 	function set_directions(){
 		var last = 718;
 		$scope.pokeIndex = Number($routeParams.pokemonId);
@@ -66,7 +67,7 @@ PokedexControllers.controller('DetailsController',
 
 	set_directions();
 
-  var stats = [{title: "HP", name: "hp"}, {title: "Attack", name: "attack"}, {title: "Defense",name: "defense"}, {title: "Sp. Attack", name: "sp_atk"},{title:"Sp. Defense", name: "sp_def"},{title: "speed",name: "speed"}];
+  var stats = $scope.stat_map;
   $scope.stats = stats;
    
   $scope.natures = ["hardy", "lonely", "brave", "adamant", "naughty", "bold", "docile", "relaxed", "impish", "lax", "timid", "hasty", "serious", "jolly", "naive", "modest", "mild", "quiet", "bashful", "rash", "calm", "gentle", "sassy", "careful", "quirky"];
