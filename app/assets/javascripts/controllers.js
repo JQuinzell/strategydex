@@ -16,7 +16,7 @@ PokedexControllers.controller('PokedexController', ['$scope', 'pokedex', '$filte
 		$scope.pokedex = $filter('fullyEvolved')(pokedata);
 	});
 
-  $scope.toggleType =function(type){
+  this.toggleType =function(type){
     var index = $scope.dex_q.types.indexOf(type);
     if( index === -1){
       $scope.dex_q.types.push(type);
@@ -26,7 +26,7 @@ PokedexControllers.controller('PokedexController', ['$scope', 'pokedex', '$filte
     $scope.pokedex = $filter('onlyTypes')(pokedata, $scope.dex_q.types);
   };
   
-  $scope.toggleNfe = function(){
+  this.toggleNfe = function(){
     if(!$scope.dex_q.nfe){
       $scope.pokedex = pokedata
     } else {
@@ -195,7 +195,7 @@ PokedexControllers.filter('onlyTypes',function(){
     for(var i = 0; i<pokemon.length; i++){
       var mon = pokemon[i];
       for(var j = 0; j<mon.types.length; j++){
-        if(valid_types.indexOf(mon.types[j]) > -1){
+        if(valid_types.indexOf(mon.types[j].name) > -1){
           list.push(mon);
           break;
         }

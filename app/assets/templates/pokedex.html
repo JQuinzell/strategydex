@@ -26,10 +26,10 @@
 			descending
 		</label>
     <label>
-      Include NFE: <input type="checkbox" ng-click="toggleNfe()">
+      Include NFE: <input type="checkbox" ng-click="dexCtrl.toggleNfe()">
     </label>
     <label ng-repeat="type in type_list">
-      {{type}}<input name="types" type="checkbox" ng-click="toggleType(type)" checked>
+      {{type}}<input name="types" type="checkbox" ng-click="dexCtrl.toggleType(type)" checked>
     </label><br>    
 	</form>
 
