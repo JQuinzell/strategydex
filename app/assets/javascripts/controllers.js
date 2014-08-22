@@ -2,14 +2,15 @@ var PokedexControllers = angular.module('PokedexControllers', ['PokemonDirective
 
 PokedexControllers.controller('PokedexController', ['$scope', 'pokedex', '$filter', function($scope, pokedex, $filter) {
   var pokedata;
-  $scope.type_list = ["normal", "fighting", "flying", "poison", "ground", "rock", "bug", "ghost", "steel", "fire", "water", "grass", "electric", "psychic", "ice", "dragon", "dark", "fairy"];
+  var type_list = ["normal", "fighting", "flying", "poison", "ground", "rock", "bug", "ghost", "steel", "fire", "water", "grass", "electric", "psychic", "ice", "dragon", "dark", "fairy"];
+  $scope.type_list = type_list;
  $scope.dex_q = {
     types: [],
     order: 'national_id',
     nfe: false
   };
-  for(var i = 0; i<$scope.type_list.length; i++){
-    $scope.dex_q.types.push($scope.type_list[i]);
+  for(var i = 0; i<type_list.length; i++){
+    $scope.dex_q.types.push(type_list[i]);
   }
 	pokedex.all().success(function(data){
     pokedata = data;
