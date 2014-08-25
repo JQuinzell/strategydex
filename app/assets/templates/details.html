@@ -3,8 +3,8 @@
 	<a ng-href="#/">Back</a>
 	<a ng-href="#/details/{{prevPoke}}">Prev</a>
 	<a ng-href="#/details/{{nextPoke}}">Next</a>
-  <input id="search" type="text" ng-model="query.find">
-  <div ng-repeat="mon in pokedex | filter:{name:query.find} | limitTo:10" ng-show="query.find">
+  <input id="search" type="text" ng-model="search_q.find">
+  <div ng-repeat="mon in pokedex | filter:{name:search_q.find} | limitTo:10" ng-show="search_q.find">
     <a style="margin: 10px; background:blue; cursor: pointer;" ng-click="addPoke(mon)">{{mon.name}}</a>
   </div>
   <div class="pokemon-box">
