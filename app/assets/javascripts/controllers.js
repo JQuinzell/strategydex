@@ -76,7 +76,6 @@ PokedexControllers.controller('DetailsController',
     var defense = move.category === "special" ? target.stats.sp_def.value : target.stats.defense.value;
     
     var raw = damageService.raw_damage(attack, defense, move.power);
-    console.log(raw);
     var stab = 1;
     for(var i = 0; i<user.types.length; i++){
       if(user.types[i].name === move.type)
@@ -84,7 +83,6 @@ PokedexControllers.controller('DetailsController',
     }
     var type_mult = weaknessChecker.type_multipliers(target)[move.type];
     type_mult = type_mult === undefined ? 1 : type_mult;
-    console.log(raw, stab, type_mult);
     move.min_dmg = Math.floor(Math.floor(Math.floor(raw*0.85)*stab)*type_mult);
     move.max_dmg = Math.floor(Math.floor(raw*stab)*type_mult);
     move.calced = true;
@@ -102,7 +100,7 @@ PokedexControllers.controller('DetailsController',
     poke.stats[stat].value = statService.calc_stat(stat, poke[stat], poke.stats[stat].iv_val, poke.stats[stat].ev_val, poke.nature);
   };
   
-  $scope.setOrder = function(q){
+  $scope.synergy_order = function(q){
     if($scope.syn_query.order === q){
       $scope.syn_query.dir = !$scope.syn_query.dir;
     } else {
