@@ -64,7 +64,7 @@ PokedexControllers.controller('DetailsController',
   $scope.addPoke = function(poke){
     set_stats(poke);
     $scope.comparison = poke;
-    $scope.query.find = null;
+    $scope.search_q.find = null;
   };
   
   $scope.removePoke = function(){
