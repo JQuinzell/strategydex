@@ -117,9 +117,7 @@ PokedexControllers.controller('DetailsController',
     $scope.synergy_scores = [];
     for(var i = 0; i<list.length; i++){      
       var variants = weaknessChecker.ability_typings(list[i]);
-      console.log("Variants", variants);
       for(var z = 0; z<variants.length; z++){
-        console.log("WTF",variants[z]);
         var score = weaknessChecker.synergy_scores(variants[z], $scope.pokemon);
         unsorted.push(score);
       }
@@ -133,7 +131,6 @@ PokedexControllers.controller('DetailsController',
       current.added = false;
       for(var k = 0; k<$scope.synergy_scores.length; k++){
         var item = $scope.synergy_scores[k];
-//         console.log("Comparing", current,"to", item);
         if(current.type === item.type) {
           item.names.push(current.names[0]);
           current.added = true;
