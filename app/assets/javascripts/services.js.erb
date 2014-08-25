@@ -291,7 +291,7 @@ app.factory('statService', [function(){
   return service;
 }]);
 
-app.factory('damageService', ['statService', function(stats){
+app.factory('damageService', ['statService', 'weaknessChecker', function(stats, weaknessChecker){
   var service = {};
 
   //doesn't consider any modifiers: STAB, type match up,  crit, item, rand
@@ -303,6 +303,23 @@ app.factory('damageService', ['statService', function(stats){
     var result = Math.floor(defense_var/50)+2;
     console.log("Raw dmg:", result);
     return result;
+  };
+  
+  service.damage_range = function(move, user, target){
+    var attack = move.category === "special" ? user.stats.sp_atk.value : user.stats.attack.value;
+    var defense = move.category === "special" ? target.stats.sp_def.value : target.stats.defense.value;
+    
+    var raw = service.raw_damage(attack, defense, move.power, user.level);
+    var stab = 1;
+    for(var i = 0; i<user.types.length; i++){
+      if(user.types[i].name === move.type)
+        stab = 1.5;
+    }
+    var type_mult = weaknessChecker.type_multipliers(target)[move.type];
+    type_mult = type_mult === undefined ? 1 : type_mult;
+    move.min_dmg = Math.floor(Math.floor(Math.floor(raw*0.85)*stab)*type_mult);
+    move.max_dmg = Math.floor(Math.floor(raw*stab)*type_mult);
+    return;
   };
   return service;
 }])
