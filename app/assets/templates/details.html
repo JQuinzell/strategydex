@@ -76,11 +76,11 @@
   <table style="color:white; clear: both;" ng-show="syn_query.order">
     <tr>
       <th>Name</th>
-      <th ng-click="setOrder('defender')">Defends for {{pokemon.name}}</th>
+      <th ng-click="synergy_order('defender')">Defends for {{pokemon.name}}</th>
       <th>Reasons</th>
-      <th ng-click="setOrder('defended')">Defended by {{pokemon.name}}</th>
+      <th ng-click="synergy_order('defended')">Defended by {{pokemon.name}}</th>
       <th>Reasons</th>
-      <th ng-click="setOrder('total')">Total</th>
+      <th ng-click="synergy_order('total')">Total</th>
     </tr>
     <tr ng-repeat="score in synergy_scores | orderBy:syn_query.order:syn_query.dir">
       <td>
