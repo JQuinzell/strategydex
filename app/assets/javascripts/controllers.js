@@ -72,19 +72,7 @@ PokedexControllers.controller('DetailsController',
   };
   
   $scope.calc_damage = function(move, user, target){
-    var attack = move.category === "special" ? user.stats.sp_atk.value : user.stats.attack.value;
-    var defense = move.category === "special" ? target.stats.sp_def.value : target.stats.defense.value;
-    
-    var raw = damageService.raw_damage(attack, defense, move.power);
-    var stab = 1;
-    for(var i = 0; i<user.types.length; i++){
-      if(user.types[i].name === move.type)
-        stab = 1.5;
-    }
-    var type_mult = weaknessChecker.type_multipliers(target)[move.type];
-    type_mult = type_mult === undefined ? 1 : type_mult;
-    move.min_dmg = Math.floor(Math.floor(Math.floor(raw*0.85)*stab)*type_mult);
-    move.max_dmg = Math.floor(Math.floor(raw*stab)*type_mult);
+    damageService.damage_range(move, user, target);
     move.calced = true;
   };
       
