@@ -1,6 +1,7 @@
 class Pokemon < ActiveRecord::Base
   has_and_belongs_to_many :types
   has_and_belongs_to_many :abilities
+  has_and_belongs_to_many :moves
   has_many :evolutions
   has_many :evolved_forms, through: :evolutions
   
