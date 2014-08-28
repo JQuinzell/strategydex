@@ -10,6 +10,16 @@ types = ["normal", "fighting", "flying", "poison", "ground", "rock", "bug", "gho
 pokedex = File.read("#{Rails.root}/db/dex.json")
 pokedex = JSON.parse pokedex
 
+moves = File.read("#{Rails.root}/db/moves.json")
+moves = JSON.parse moves
+
+moves.each do |data|
+  move = Move.find_or_create_by name: data['name']
+  move.power = data['power']
+  move.category = data['category']
+  move.save
+end
+
 pokedex.each do |data|
   pokemon = Pokemon.find_or_create_by(name: data["name"])
   pokemon.name = data["name"]
@@ -32,9 +42,14 @@ pokedex.each do |data|
   end
   evos = []
   (evos << data["evolutions"]).flatten!
-  evos.each do |p|
-    name = p["to"]
-    pokemon.evolved_forms << Pokemon.find_or_create_by(name: name) unless name.include?("-mega")
+  pokemon.evolved_forms.clear
+  evos.each do |name|
+    pokemon.evolved_forms << Pokemon.find_or_create_by(name: name)
+  end
+  pokemon.moves.clear
+  puts pokemon.moves
+  data['moves'].each do |name|
+    pokemon.moves << Move.find_by(name: name)
   end
   pokemon.save
 end
