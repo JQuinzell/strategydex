@@ -5,7 +5,7 @@ module Api
       
       def index
         if params[:pokemon]
-          respond_with Pokemon.find(pokemon).moves
+          respond_with Pokemon.find(params[:pokemon]).moves
         else
           respond_with Move.all
         end

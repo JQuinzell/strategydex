@@ -13,11 +13,12 @@ app.factory('pokedex', ['$http', '$q', function($http, $q){
     });
     return d.promise;
   };
-  pokeObj.moves_for = function(id){
+  pokeObj.moves_for = function(poke){
     var d = $q.defer();
-    $http.get(apiPath + 'moves/?id=' + id, {cache: true}).success(function(date){
+    $http.get(apiPath + 'moves/?pokemon=' + poke, {cache: true}).success(function(data){
       d.resolve(data);
     });
+    return d.promise;
   }
   
   return pokeObj;

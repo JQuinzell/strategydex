@@ -56,8 +56,11 @@ PokedexControllers.controller('DetailsController',
     pokes = data;
 	});
    
-	pokedex.find($routeParams.pokemonId).then(function(data){
+	pokedex.find(pokeId).then(function(data){
     $scope.pokemon = data;
+    pokedex.moves_for(pokeId).then(function(moves){
+      $scope.pokemon.moves = moves;
+    });
     set_stats($scope.pokemon);    
   });
    
