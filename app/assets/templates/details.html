@@ -35,7 +35,8 @@
     </ul>
   </div>
   <div class="pokemon-controls" ng-show="comparison">
-    <h4>Damage Calc</h4> 
+    <h4>Damage Calc</h4>
+    Moves: <select ng-options="move as move for move in pokemon.moves">
     Power: <input type="text"
            only-digits
            max-digits="3"
