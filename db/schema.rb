@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(version: 20140828033550) do
 
   create_table "moves", force: true do |t|
     t.string   "name"
+    t.string   "move_type"
     t.string   "category"
     t.integer  "power"
     t.datetime "created_at"

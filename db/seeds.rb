@@ -20,6 +20,17 @@ moves.each do |data|
   move.save
 end
 
+typings = JSON.parse File.read("#{Rails.root}/db/move_types.json")
+
+typings.each do |type_name, move_list|
+  move_list.each do |move|
+    puts move
+    m = Move.find_by(name: move)
+    m.move_type = type_name
+    m.save
+  end
+end
+
 pokedex.each do |data|
   pokemon = Pokemon.find_or_create_by(name: data["name"])
   pokemon.name = data["name"]
