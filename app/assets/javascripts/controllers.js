@@ -41,10 +41,10 @@ PokedexControllers.controller('PokedexController', ['$scope', 'pokedex', '$filte
 }]);
 
 PokedexControllers.controller('DetailsController',
-['$scope', '$routeParams', '$filter', 'pokedex', 'weaknessChecker', 'statService', 'damageService',
- function($scope, $routeParams, $filter, pokedex, weaknessChecker, statService, damageService) {
+['$scope', '$stateParams', '$filter', 'pokedex', 'weaknessChecker', 'statService', 'damageService',
+ function($scope, $stateParams, $filter, pokedex, weaknessChecker, statService, damageService) {
   var pokes;
-  var pokeId = Number($routeParams.pokemonId);
+  var pokeId = Number($stateParams.pokemonId);
   var last = 718;
   var stats = $scope.stat_map;
   $scope.stats = stats;   

@@ -3,7 +3,7 @@
     "name": "bower-rails generated lib assets",
     "dependencies": {
       "angular": "latest",
-      "angular-route": "latest",
+      "angular-ui-router": "0.2.8-bowratic-tedium",
       "angular-cache": "latest"
     }
   },
