@@ -14,5 +14,12 @@ pokeTools.config(['$stateProvider', '$urlRouterProvider', function($stateProvide
     url: '/details/:pokemonId',
     templateUrl: "details.html",
 		controller: 'DetailsController'
-	})
+	}).
+  state('details.synergy', {
+    url: '/synergy',
+    templateUrl: 'synergy.html',
+    controller: 'SynergyController'
+  })
+  
+  $urlRouterProvider.otherwise("/pokedex");
 }]);

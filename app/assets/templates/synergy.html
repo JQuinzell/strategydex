@@ -1,0 +1,43 @@
+<h1>{{message}}</h1>
+
+<table style="color:white; clear: both;" ng-show="syn_query.order">
+  <tr>
+    <th>Name</th>
+    <th ng-click="synergy_order('defender')">Defends for {{pokemon.name}}</th>
+    <th>Reasons</th>
+    <th ng-click="synergy_order('defended')">Defended by {{pokemon.name}}</th>
+    <th>Reasons</th>
+    <th ng-click="synergy_order('total')">Total</th>
+  </tr>
+  <tr ng-repeat="score in synergy_scores | orderBy:syn_query.order:syn_query.dir">
+    <td>
+      <h6>{{score.type}}</h6>
+      <ul>
+        <div ng-repeat="name in score.names track by $index">
+          <li>{{name}}</li>
+        </div>
+      </ul>
+    </td>
+    <td>{{score.defender}}%</td>
+    <td>
+      <ul>
+        <div ng-repeat="reason in score.defender_reasons">
+          <li>{{reason}}</li>
+        </div>
+      </ul>
+      <hr>
+    </td>
+    <td>{{score.defended}}%</td>
+    <td>
+      <ul>
+        <div ng-repeat="reason in score.defended_reasons">
+          <li>{{reason}}</li>
+        </div>
+      </ul>
+      <hr>
+    </td>
+    <td>
+      {{score.total}}%
+    </td>
+  </tr>
+</table>
