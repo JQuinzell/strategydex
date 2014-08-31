@@ -1,19 +1,18 @@
 var pokeTools = angular.module('pokeTools', [
-	'ngRoute',
+	'ui.router',
 	'PokedexControllers',
   'templates'
 ]);
 
-pokeTools.config(['$routeProvider', function($routeProvider){
-	$routeProvider.
-	when('/pokedex', {
+pokeTools.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider){
+	$stateProvider.
+	state('pokedex', {
+    url: '/pokedex',
 		templateUrl: "pokedex.html"
 	}).
-	when('/details/:pokemonId', {
+	state('details', {
+    url: '/details/:pokemonId',
     templateUrl: "details.html",
 		controller: 'DetailsController'
-	}).
-	otherwise({
-		redirectTo: '/pokedex'
-	});
+	})
 }]);
