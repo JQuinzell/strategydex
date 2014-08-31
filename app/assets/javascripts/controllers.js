@@ -43,19 +43,15 @@ PokedexControllers.controller('PokedexController', ['$scope', 'pokedex', '$filte
 PokedexControllers.controller('DetailsController',
 ['$scope', '$stateParams', '$filter', 'pokedex', 'weaknessChecker', 'statService', 'damageService',
  function($scope, $stateParams, $filter, pokedex, weaknessChecker, statService, damageService) {
-  var pokes;
   var pokeId = Number($stateParams.pokemonId);
   var last = 718;
   var stats = $scope.stat_map;
+  $scope.pokeId = pokeId;
   $scope.stats = stats;   
   $scope.prevPoke = pokeId > 1 ? pokeId-1 : last;
   $scope.nextPoke = pokeId < last ? pokeId+1 : 1;
   $scope.natures = ["hardy", "lonely", "brave", "adamant", "naughty", "bold", "docile", "relaxed", "impish", "lax", "timid", "hasty", "serious", "jolly", "naive", "modest", "mild", "quiet", "bashful", "rash", "calm", "gentle", "sassy", "careful", "quirky"];
-  
-  pokedex.all().success(function(data){
-    pokes = data;
-	});
-   
+     
 	pokedex.find(pokeId).then(function(data){
     $scope.pokemon = data;
     pokedex.moves_for(pokeId).then(function(moves){
@@ -94,16 +90,27 @@ PokedexControllers.controller('DetailsController',
   $scope.poke_stat = function(stat, poke){
     poke.stats[stat].value = statService.calc_stat(stat, poke[stat], poke.stats[stat].iv_val, poke.stats[stat].ev_val, poke.nature);
   };
-  
-  $scope.synergy_order = function(q){
-    if($scope.syn_query.order === q){
-      $scope.syn_query.dir = !$scope.syn_query.dir;
-    } else {
-      $scope.syn_query.order = q;
-      $scope.syn_query.dir = 'reverse';
-    }
-  };
     
+  function set_stats(poke){
+    poke.stats = {};
+    for(var i = 0; i<stats.length; i++){     
+      var stat = stats[i].name
+      var base = poke[stat];
+      poke.stats[stat] = {};
+      poke.stats[stat].ev_val = 0;
+      poke.stats[stat].iv_val = 31;
+      poke.stats[stat].value = statService.calc_stat(stat, base);
+    }
+  }
+}]);
+
+PokedexControllers.controller('SynergyController', ['$scope', 'pokedex', function($scope, pokedex){
+  var pokes;
+
+  pokedex.all().success(function(data){
+    pokes = data;
+	});
+  
   $scope.synergize = function(){
     $scope.syn_query = {order: 'total', dir: 'reverse'}
     var list;
@@ -139,17 +146,14 @@ PokedexControllers.controller('DetailsController',
     }
   };
   
-  function set_stats(poke){
-    poke.stats = {};
-    for(var i = 0; i<stats.length; i++){     
-      var stat = stats[i].name
-      var base = poke[stat];
-      poke.stats[stat] = {};
-      poke.stats[stat].ev_val = 0;
-      poke.stats[stat].iv_val = 31;
-      poke.stats[stat].value = statService.calc_stat(stat, base);
+  $scope.synergy_order = function(q){
+    if($scope.syn_query.order === q){
+      $scope.syn_query.dir = !$scope.syn_query.dir;
+    } else {
+      $scope.syn_query.order = q;
+      $scope.syn_query.dir = 'reverse';
     }
-  }
+  };    
 }]);
 
 PokedexControllers.filter('fullyEvolved', function(){
