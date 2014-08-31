@@ -36,7 +36,7 @@
   </div>
   <div class="pokemon-controls" ng-show="comparison">
     <h4>Damage Calc</h4>
-    Moves: <select ng-options="move.name as move.name for move in pokemon.moves" ng-model="move"></select>
+    Moves: <select ng-options="move as move.name for move in pokemon.moves" ng-model="move" ng-change="set_move(move)"></select>
     Power: <input type="text"
            only-digits
            max-digits="3"

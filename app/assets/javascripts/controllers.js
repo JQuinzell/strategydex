@@ -73,6 +73,10 @@ PokedexControllers.controller('DetailsController',
   $scope.removePoke = function(){
     $scope.comparison = null;
   };
+   
+  $scope.set_move = function(move){
+    console.log($scope.move);
+  };
   
   $scope.calc_damage = function(move, user, target){
     damageService.damage_range(move, user, target);

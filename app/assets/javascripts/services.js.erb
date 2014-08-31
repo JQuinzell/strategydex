@@ -16,6 +16,10 @@ app.factory('pokedex', ['$http', '$q', function($http, $q){
   pokeObj.moves_for = function(poke){
     var d = $q.defer();
     $http.get(apiPath + 'moves/?pokemon=' + poke, {cache: true}).success(function(data){
+      for(var i = 0; i<data.length; i++){
+        data[i].type = data[i].move_type
+        delete data[i].move_type
+      }
       d.resolve(data);
     });
     return d.promise;
