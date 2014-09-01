@@ -169,8 +169,23 @@ PokedexControllers.controller('SynergyController',
   };    
 }]);
 
-PokedexControllers.controller('ThreatController', ['$scope', function($scope){
-  $scope.message = "Works";
+PokedexControllers.controller('ThreatController', ['$scope', 'pokedex', '$filter', function($scope, pokedex, $filter){
+  var speed;
+  pokedex.find($scope.pokeId).then(function(data){
+    $scope.pokemon = data;
+    speed = data.speed;
+    
+    pokedex.all().success(function(data){
+      var pokes = $filter('fullyEvolved')(data);
+      var faster = [];
+      //find faster
+      for(var i = 0; i<pokes.length; i++){
+        if(speed <= pokes[i].speed)
+          faster.push(pokes[i])
+      }
+      $scope.threats = faster;
+    });
+  });
 }]);
 
 PokedexControllers.filter('fullyEvolved', function(){
