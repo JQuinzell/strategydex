@@ -104,48 +104,52 @@ PokedexControllers.controller('DetailsController',
   }
 }]);
 
-PokedexControllers.controller('SynergyController', ['$scope', 'pokedex', function($scope, pokedex){
+PokedexControllers.controller('SynergyController',
+  ['$scope', '$filter', 'pokedex', 'weaknessChecker', function($scope, $filter, pokedex, weaknessChecker){
   var pokes;
+  $scope.syn_query = {order: 'total', dir: 'reverse'};
 
-  pokedex.all().success(function(data){
-    pokes = data;
-	});
+  pokedex.find($scope.pokeId).then(function(data){
+    $scope.pokemon = data;
   
-  $scope.synergize = function(){
-    $scope.syn_query = {order: 'total', dir: 'reverse'}
-    var list;
-    var unsorted = [];
-    list = $filter('fullyEvolved')(pokes);
-    $scope.synergy_scores = [];
-    for(var i = 0; i<list.length; i++){      
-      var variants = weaknessChecker.ability_typings(list[i]);
-      for(var z = 0; z<variants.length; z++){
-        var score = weaknessChecker.synergy_scores(variants[z], $scope.pokemon);
-        unsorted.push(score);
-      }
-    }
+    pokedex.all().success(function(data){
+      pokes = data;
 
-    $scope.synergy_scores.push(unsorted[0]);
-    //literate through all unsorted
-    for(var j = 1; j<unsorted.length; j++){
-      //iterate through all with filtered value
-      var current = unsorted[j];
-      current.added = false;
-      for(var k = 0; k<$scope.synergy_scores.length; k++){
-        var item = $scope.synergy_scores[k];
-        if(current.type === item.type) {
-          item.names.push(current.names[0]);
-          current.added = true;
-          break;
+      var list;
+      var unsorted = [];
+      list = $filter('fullyEvolved')(pokes);
+      $scope.synergy_scores = [];
+      for(var i = 0; i<list.length; i++){      
+        var variants = weaknessChecker.ability_typings(list[i]);
+        for(var z = 0; z<variants.length; z++){
+          console.log(variants[z]);
+          var score = weaknessChecker.synergy_scores(variants[z], $scope.pokemon);
+          unsorted.push(score);
         }
       }
-      if(!current.added){
-        delete current.added;
-        $scope.synergy_scores.push(current);
+
+      $scope.synergy_scores.push(unsorted[0]);
+      //literate through all unsorted
+      for(var j = 1; j<unsorted.length; j++){
+        //iterate through all with filtered value
+        var current = unsorted[j];
+        current.added = false;
+        for(var k = 0; k<$scope.synergy_scores.length; k++){
+          var item = $scope.synergy_scores[k];
+          if(current.type === item.type) {
+            item.names.push(current.names[0]);
+            current.added = true;
+            break;
+          }
+        }
+        if(!current.added){
+          delete current.added;
+          $scope.synergy_scores.push(current);
+        }
       }
-    }
-  };
-  
+    });
+  });
+      
   $scope.synergy_order = function(q){
     if($scope.syn_query.order === q){
       $scope.syn_query.dir = !$scope.syn_query.dir;

@@ -68,6 +68,7 @@ app.factory('weaknessChecker', ['typeMapping', function(typeMapping){
   var service = {};
   
   service.type_multipliers = function(pokemon) {
+    console.log(pokemon);
     var multipliers = {};
     var types = [];
     for(var t = 0; t<pokemon.types.length; t++){
