@@ -265,6 +265,8 @@ app.factory('weaknessChecker', ['typeMapping', function(typeMapping){
 
 app.factory('statService', [function(){
   var nature_map = {};
+  var stats = [{title: "HP", name: "hp"}, {title: "Attack", name: "attack"}, {title: "Defense",name: "defense"}, {title: "Sp. Attack", name: "sp_atk"},{title:"Sp. Defense", name: "sp_def"},{title: "speed",name: "speed"}];
+
   nature_map.hardy = {};
   nature_map.lonely = {attack: 1.1, defense: .9};
   nature_map.brave = {attack: 1.1, defense: .9};
@@ -306,6 +308,18 @@ app.factory('statService', [function(){
       return Math.floor(((iv + 2 * base + (Math.round(ev/4))) * level/100 + 5) * nat_mod);
     }
   };
+  
+  service.set_stats = function(poke){    
+    poke.stats = {};
+    for(var i = 0; i<stats.length; i++){     
+      var stat = stats[i].name
+      var base = poke[stat];
+      poke.stats[stat] = {};
+      poke.stats[stat].ev_val = 0;
+      poke.stats[stat].iv_val = 31;
+      poke.stats[stat].value = service.calc_stat(stat, base);
+    }
+  };
 
   return service;
 }]);
@@ -324,7 +338,7 @@ app.factory('damageService', ['statService', 'weaknessChecker', function(stats, 
     return result;
   };
   
-  service.damage_range = function(move, user, target){
+  service.damage_score = function(move, user, target){
     var attack = move.category === "special" ? user.stats.sp_atk.value : user.stats.attack.value;
     var defense = move.category === "special" ? target.stats.sp_def.value : target.stats.defense.value;
     
