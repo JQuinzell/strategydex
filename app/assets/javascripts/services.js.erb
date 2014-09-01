@@ -13,6 +13,13 @@ app.factory('pokedex', ['$http', '$q', function($http, $q){
     });
     return d.promise;
   };
+  pokeObj.damaging_moves = function(poke){
+    var d = $q.defer;
+    $http.get(apiPath + 'moves/?pokemon=' + poke + '&damage=true', {cache: true}).success(function(data){
+      d.resolve(data);
+    });
+    return d.promise;
+  };
   pokeObj.moves_for = function(poke){
     var d = $q.defer();
     $http.get(apiPath + 'moves/?pokemon=' + poke, {cache: true}).success(function(data){
