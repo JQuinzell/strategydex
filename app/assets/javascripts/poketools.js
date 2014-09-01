@@ -23,6 +23,11 @@ pokeTools.config(['$stateProvider', '$urlRouterProvider', function($stateProvide
     url: '/damage',
     templateUrl: 'damage.html',
     controller: 'DamageController'
+  }).
+  state('details.threat', {
+    url: '/threat',
+    templateUrl: 'threat.html',
+    controller: 'ThreatController'
   })
   
   $urlRouterProvider.otherwise("/pokedex");

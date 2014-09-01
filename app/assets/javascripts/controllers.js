@@ -169,6 +169,10 @@ PokedexControllers.controller('SynergyController',
   };    
 }]);
 
+PokedexControllers.controller('ThreatController', ['$scope', function($scope){
+  $scope.message = "Works";
+}]);
+
 PokedexControllers.filter('fullyEvolved', function(){
   return function(pokemon){
     var list = [];
