@@ -45,13 +45,23 @@ PokedexControllers.controller('DetailsController',
  function($scope, $stateParams, $filter, pokedex, weaknessChecker, statService, damageService) {
   var pokeId = Number($stateParams.pokemonId);
   var last = 718;
-  var stats = $scope.stat_map;
   $scope.pokeId = pokeId;
-  $scope.stats = stats;   
   $scope.prevPoke = pokeId > 1 ? pokeId-1 : last;
   $scope.nextPoke = pokeId < last ? pokeId+1 : 1;
-  $scope.natures = ["hardy", "lonely", "brave", "adamant", "naughty", "bold", "docile", "relaxed", "impish", "lax", "timid", "hasty", "serious", "jolly", "naive", "modest", "mild", "quiet", "bashful", "rash", "calm", "gentle", "sassy", "careful", "quirky"];
      
+	pokedex.find(pokeId).then(function(data){
+    $scope.pokemon = data;
+  });
+  
+}]);
+
+PokedexControllers.controller('DamageController',
+  ['$scope', 'pokedex', 'statService', 'damageService', function($scope, pokedex, statService, damageService){
+  $scope.natures = ["hardy", "lonely", "brave", "adamant", "naughty", "bold", "docile", "relaxed", "impish", "lax", "timid", "hasty", "serious", "jolly", "naive", "modest", "mild", "quiet", "bashful", "rash", "calm", "gentle", "sassy", "careful", "quirky"];
+  var stats = $scope.stat_map;
+  $scope.stats = stats;
+  var pokeId = $scope.pokeId;  
+  
 	pokedex.find(pokeId).then(function(data){
     $scope.pokemon = data;
     pokedex.moves_for(pokeId).then(function(moves){
@@ -59,7 +69,7 @@ PokedexControllers.controller('DetailsController',
     });
     set_stats($scope.pokemon);    
   });
-   
+  
   $scope.addPoke = function(poke){
     set_stats(poke);
     $scope.comparison = poke;
@@ -69,7 +79,6 @@ PokedexControllers.controller('DetailsController',
   $scope.removePoke = function(){
     $scope.comparison = null;
   };
-   
   $scope.set_move = function(move){
     console.log($scope.move);
   };
@@ -85,7 +94,7 @@ PokedexControllers.controller('DetailsController',
       var base = poke[stat];
       poke.stats[stat].value = statService.calc_stat(stat, base, poke.stats[stat].iv_val, poke.stats[stat].ev_val, poke.nature);
      }
-   }
+   };
   
   $scope.poke_stat = function(stat, poke){
     poke.stats[stat].value = statService.calc_stat(stat, poke[stat], poke.stats[stat].iv_val, poke.stats[stat].ev_val, poke.nature);
@@ -102,6 +111,7 @@ PokedexControllers.controller('DetailsController',
       poke.stats[stat].value = statService.calc_stat(stat, base);
     }
   }
+
 }]);
 
 PokedexControllers.controller('SynergyController',

@@ -18,6 +18,11 @@ pokeTools.config(['$stateProvider', '$urlRouterProvider', function($stateProvide
     url: '/synergy',
     templateUrl: 'synergy.html',
     controller: 'SynergyController'
+  }).
+  state('details.damage', {
+    url: '/damage',
+    templateUrl: 'damage.html',
+    controller: 'DamageController'
   })
   
   $urlRouterProvider.otherwise("/pokedex");
