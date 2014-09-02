@@ -13,9 +13,9 @@ app.factory('pokedex', ['$http', '$q', function($http, $q){
     });
     return d.promise;
   };
-  pokeObj.damaging_moves = function(poke){
-    var d = $q.defer;
-    $http.get(apiPath + 'moves/?pokemon=' + poke + '&damage=true', {cache: true}).success(function(data){
+  pokeObj.damaging_moves = function(id){
+    var d = $q.defer();
+    $http.get(apiPath + 'moves/?pokemon=' + id + '&damage=true', {cache: true}).success(function(data){
       d.resolve(data);
     });
     return d.promise;
@@ -75,7 +75,7 @@ app.factory('weaknessChecker', ['typeMapping', function(typeMapping){
   var service = {};
   
   service.type_multipliers = function(pokemon) {
-    console.log(pokemon);
+//     console.log(pokemon);
     var multipliers = {};
     var types = [];
     for(var t = 0; t<pokemon.types.length; t++){
@@ -330,11 +330,11 @@ app.factory('damageService', ['statService', 'weaknessChecker', function(stats, 
   //doesn't consider any modifiers: STAB, type match up,  crit, item, rand
   service.raw_damage = function(attack, defense, power, level) {
     if(level === undefined) level = 100;
-    console.log("raw_damage vars:", attack, defense, power, level);
+//     console.log("raw_damage vars:", attack, defense, power, level);
     var attack_var = Math.floor(2*level/5+2) * power * attack;
     var defense_var = Math.floor(attack_var/defense);
     var result = Math.floor(defense_var/50)+2;
-    console.log("Raw dmg:", result);
+//     console.log("Raw dmg:", result);
     return result;
   };
   
@@ -352,7 +352,11 @@ app.factory('damageService', ['statService', 'weaknessChecker', function(stats, 
     type_mult = type_mult === undefined ? 1 : type_mult;
     move.min_dmg = Math.floor(Math.floor(Math.floor(raw*0.85)*stab)*type_mult);
     move.max_dmg = Math.floor(Math.floor(raw*stab)*type_mult);
-    return;
+    var min_percent = (move.min_dmg/target.stats.hp.value)*100;
+    move.min_percent = Math.round(min_percent*10)/10;
+    var max_percent = (move.max_dmg/target.stats.hp.value)*100;
+    move.max_percent = Math.round(max_percent*10)/10;
+    return move;
   };
   return service;
 }])
