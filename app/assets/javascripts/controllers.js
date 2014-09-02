@@ -83,7 +83,7 @@ PokedexControllers.controller('DamageController',
   };
   
   $scope.calc_damage = function(move, user, target){
-    damageService.damage_range(move, user, target);
+    damageService.damage_score(move, user, target);
     move.calced = true;
   };
       
