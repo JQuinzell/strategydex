@@ -169,10 +169,12 @@ PokedexControllers.controller('SynergyController',
   };    
 }]);
 
-PokedexControllers.controller('ThreatController', ['$scope', 'pokedex', '$filter', function($scope, pokedex, $filter){
+PokedexControllers.controller('ThreatController', ['$scope', 'pokedex', '$filter', 'damageService', 'statService', function($scope, pokedex, $filter, damageService, statService){
   var speed;
   pokedex.find($scope.pokeId).then(function(data){
+    statService.set_stats(data);
     $scope.pokemon = data;
+    var pokemon = $scope.pokemon;
     speed = data.speed;
     
     pokedex.all().success(function(data){
@@ -180,12 +182,41 @@ PokedexControllers.controller('ThreatController', ['$scope', 'pokedex', '$filter
       var faster = [];
       //find faster
       for(var i = 0; i<pokes.length; i++){
-        if(speed <= pokes[i].speed)
-          faster.push(pokes[i])
+        var potential = pokes[i]
+        if(speed <= potential.speed){
+          statService.set_stats(potential);
+          faster.push(potential);
+        }
       }
-      $scope.threats = faster;
+      var threats = [];
+      for(var j = 0; j<faster.length; j++){
+        var threat = faster[j];
+        console.log("Threat:",threat.name);
+        threat.moves = [];
+        threat_moves(threats, threat, pokemon);
+      }
+      $scope.threats = threats;
     });
   });
+  
+  function threat_moves(list, potential, target){   
+    pokedex.damaging_moves(potential.national_id).then(function(data){
+//       console.log("WTF",potential.name);
+      var moves = data;          
+//       console.log("Its moves:");
+      for(var k = 0; k<moves.length; k++){
+//         console.log(moves[k].name);
+        var attack = damageService.damage_score(moves[k], potential, target);
+        if(attack.min_percent > 50) {
+          console.log(attack.name);
+          potential.moves.push(attack);
+        }
+      }
+      if(potential.moves.length > 0)
+        list.push(potential);
+      console.log(potential.moves);
+    });
+  }
 }]);
 
 PokedexControllers.filter('fullyEvolved', function(){

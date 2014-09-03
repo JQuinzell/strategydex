@@ -1,6 +1,11 @@
 <h2>Faster</h2>
-<ul>
+<ul style="color:white;">
   <li ng-repeat="threat in threats">
-    {{threat.name}}
+    {{threat.name}}:
+    <ul>
+      <li ng-repeat="move in threat.moves">
+        {{move.name}} - {{move.min_percent}}%-{{move.max_percent}}%
+      </li>
+    </ul>
   </li>
 </ul>
