@@ -5,7 +5,7 @@ module Api
       
       def index
         if params[:pokemon]
-          moves = Pokemon.find(params[:pokemon]).moves
+          moves = Pokemon.find_by(national_id: params[:pokemon]).moves
           moves = moves.where("category IS NOT NULL") if params[:damage]
           respond_with moves
         else
