@@ -179,27 +179,21 @@ PokedexControllers.controller('ThreatController', ['$scope', 'pokedex', '$filter
     
     pokedex.all().success(function(data){
       var pokes = $filter('fullyEvolved')(data);
-      var faster = [];
+      var threat_list = [];
       //find faster
+      $scope.threats = [];
       for(var i = 0; i<pokes.length; i++){
-        var potential = pokes[i]
-        if(speed <= potential.speed){
-          statService.set_stats(potential);
-          faster.push(potential);
-        }
+        var current = pokes[i]
+        current.threat_types = [];
+        statService.set_stats(current);
+        threat_types(threat_list, current, pokemon);
       }
-      var threats = [];
-      for(var j = 0; j<faster.length; j++){
-        var threat = faster[j];
-        console.log("Threat:",threat.name);
-        threat.moves = [];
-        threat_moves(threats, threat, pokemon);
-      }
-      $scope.threats = threats;
     });
   });
   
-  function threat_moves(list, potential, target){   
+  function threat_types(threat_list, potential, target){   
+    potential.moves = [];
+
     pokedex.damaging_moves(potential.national_id).then(function(data){
 //       console.log("WTF",potential.name);
       var moves = data;          
@@ -208,13 +202,50 @@ PokedexControllers.controller('ThreatController', ['$scope', 'pokedex', '$filter
 //         console.log(moves[k].name);
         var attack = damageService.damage_score(moves[k], potential, target);
         if(attack.min_percent > 50) {
-          console.log(attack.name);
+//           console.log(attack.name);
           potential.moves.push(attack);
         }
       }
-      if(potential.moves.length > 0)
-        list.push(potential);
-      console.log(potential.moves);
+      if(potential.moves.length > 0) {
+//         console.log("Now addind threat type damage");
+        potential.threat_types.push('damage');
+      }  
+      if(target.speed <= potential.speed){
+        potential.threat_types.push('faster');
+      }
+      console.log(potential);
+      if(potential.threat_types.length > 0){
+        return potential;
+      } else {
+        throw "No threat";
+      }
+//       console.log(potential.moves);
+    })
+    .then(function(threat){  
+      var threats = $scope.threats;
+      console.log(threats);
+//       threats.push({title: threat_list[0].threat_types.join(" - "), pokes: [threat_list[0]]});
+      var category = threat.threat_types.join(" - ");
+      console.log(threats);
+      if(threats.length === 0){
+        var obj = {title: category};
+        obj.pokes = [threat];
+        threats.push(obj);
+      } else{
+        for(var r in threats){
+          var rank = threats[r];
+          console.log(typeof r, typeof threats.length);
+          if(category === rank.title){
+            rank.pokes.push(threat);
+            break;
+          } else if(r == threats.length - 1){   
+            console.log("HERE");
+            var new_rank = {title: category};
+            new_rank.pokes = [threat];
+            threats.push(new_rank);
+          }
+        }
+      }
     });
   }
 }]);
